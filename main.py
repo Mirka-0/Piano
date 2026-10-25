@@ -67,7 +67,7 @@ for name, rect in wkeys + bkeys:
     file = name.replace('#','s')+ '.ogg'
     path = audio / file
     snd[name] = mixer.Sound(str(path))
-    
+
 plays = {}
 
 run = True
@@ -77,12 +77,12 @@ while run:
     for evt in pygame.event.get():
         if evt.type == pygame.QUIT:
             run = False
-        if evt.type == pygame.KEYDOWN:
+        elif evt.type == pygame.KEYDOWN:
             if evt.key in bind:
                 held.add(bind[evt.key])
-        if evt.type == pygame.KEYUP:
-                if evt.key in bind:
-                    held.discard(bind[evt.key])
+        elif evt.type == pygame.KEYUP:
+            if evt.key in bind:
+                held.discard(bind[evt.key])
     mouse = None
     if pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
@@ -95,6 +95,18 @@ while run:
                 if rect.collidepoint(pos):
                     mouse = name
                     break
+
+    want=held.copy()
+    if mouse is not None:
+        want.add(mouse)
+    for name in want - set(plays):
+        chan= snd[name].play()
+        if chan is not None:
+            plays[name]=chan
+    for name in list(plays):
+        if name not in want:
+            plays[name].fadeout(150)
+            del plays[name]
     scr.fill(bg)
 
     for name, rect in wkeys: 
