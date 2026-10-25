@@ -67,7 +67,7 @@ while run:
         if evt.type == pygame.KEYDOWN:
             if evt.key in bind:
                 held.add(bind[evt.key])
-            if evt.type == pygame.KEYUP:
+        if evt.type == pygame.KEYUP:
                 if evt.key in bind:
                     held.discard(bind[evt.key])
     mouse = None
@@ -96,7 +96,8 @@ while run:
     for name, rect in bkeys:
         color = (255, 250, 135) if name == mouse or name in held else black
         pygame.draw.rect(scr, color, rect, border_radius=4)
-        label = smfont.render(name, True, white)
+        txtcol = black if color != black else white
+        label = smfont.render(name, True, txtcol)
         pos = label.get_rect(
             center=(rect.centerx, rect.bottom - 18)
         )
