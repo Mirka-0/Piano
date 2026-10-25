@@ -120,14 +120,14 @@ while run:
     prev = want.copy()
     scr.fill(bg)
     if pedal:
-        txt= 'SUSTAIN ON'
-        col=(165, 80, 80)
+        txt= 'PEDAL ON'
+        col=(165, 47, 47)
     else:
-        txt = 'SUSTAIN OFF'
+        txt = 'PEDAL OFF'
         col = (180,180,185)
     label = font.render(txt, True, col)
     scr.blit(label, (key_x, 45))
-    pygame.draw.circle(scr, col, (key_x-15, 54), 6)
+    pygame.draw.circle(scr, col, (key_x-15, 54), 6) #the youtube videos have tricked me, i was promised a decent looking circle :( mirkala of the future its ((x,y), r) maybe the pixels hate me
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name == mouse or name in held else white
