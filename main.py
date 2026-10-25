@@ -72,8 +72,16 @@ plays = {}
 pedal = False
 prev = set()
 vol = 0.7
+song =[] #to store my notesss
+rec = False
+rec_at = 0
+rec_prev = set() #the memory kinda
+playing = False
+play_at =0
+step =0
+phold = set()
 tabs= ['PIANO', 'METRONOME', 'TUNER']
-taab = 'PIANO'
+tab = 'PIANO'
 tabrs ={}
 for i, name in enumerate(tabs):
     x=20+i*145
@@ -98,7 +106,37 @@ while run:
                 vol = max(0.0, round(vol - 0.1, 2))
             for chan in plays.values():
                 chan.set_volume(vol)
-        
+            if evt.key == pygame.K_TAB:
+                if rec:
+                    now = pygame.time.get_ticks() - rec_at
+                    for name in sorted(rec_prev):
+                        song.append((now, 'up', name))
+                    rec = False
+                else:
+                    song.clear()
+                    rec_prev.clear()
+                    phold.clear()
+                    playing = False
+                    rec = True
+                    rec_at = pygame.time.get_ticks()
+            if evt.key == pygame.K_RETURN:
+                if song and not rec:
+                    playing = True
+                    play_at = pygame.time.get_ticks()
+                    step = 0
+                    phold.clear()
+                    for chan in plays.values():
+                        chan.fadeout(100)
+                    plays.clear()
+                    prev.clear()
+
+            if evt.key == pygame.K_BACKSPACE:
+                song.clear()
+                rec_prev.clear()
+                phold.clear()
+                rec = False
+                playing = False
+
         if evt.type == pygame.KEYUP:
             if evt.key == pygame.K_SPACE:
                 pedal = False
