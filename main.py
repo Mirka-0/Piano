@@ -43,7 +43,7 @@ for o, octv in enumerate(octs):
         x -= blk_w // 2
         rect = pygame.Rect(x, key_y, blk_w, blk_h)
         name = f'{sharp[i]}{octv}'
-        bkeys.append((name, rect)) #now the 24 keys have their own rectangles
+        bkeys.append((name, rect))
 tones = ['C','C#','D','D#','E','F',
          'F#','G','G#','A','A#','B']
 left= 'zsxdcvgbhnjm'
