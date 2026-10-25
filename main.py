@@ -156,8 +156,16 @@ while run:
                     break
 
     want=held.copy()
+
     if mouse is not None:
         want.add(mouse)
+    if rec:
+        now= pygame.time.get_ticks() - rec_at
+        for name in sorted(want - rec_prev):
+            song.append((now, 'down', name))
+        for name in sorted(rec_prev - want):
+            song.append((now, 'up', name))
+        rec_prev = want.copy()
     for name in want - prev:
         if name in plays:
             plays[name].fadeout(60)
