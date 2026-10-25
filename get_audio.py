@@ -13,7 +13,7 @@ folder.mkdir(exist_ok=True)
 for octv in octs:
     for note in tones:
         name = f'{note}{octv}'
-        file= name.replace('#', 's') + '.ogg'
+        file= name.replace('#', 's') + '.ogg' 
         path = folder / file
         if not path.exists():
             print(f'Downloading {name}...')
