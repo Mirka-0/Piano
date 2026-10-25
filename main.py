@@ -106,14 +106,18 @@ while run:
     want=held.copy()
     if mouse is not None:
         want.add(mouse)
-    for name in want - set(plays):
-        chan= snd[name].play()
+    for name in want - prev:
+        if name in plays:
+            plays[name].fadeout(60)
+        chan = snd[name].play()
         if chan is not None:
             plays[name]=chan
-    for name in list(plays):
-        if name not in want:
-            plays[name].fadeout(150)
-            del plays[name]
+    if not pedal:
+        for name in list(plays):
+            if name not in want:
+                plays[name].fadeout(250)
+                del plays[name]
+    prev = want.copy()
     scr.fill(bg)
 
     for name, rect in wkeys: 
