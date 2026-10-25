@@ -19,7 +19,7 @@ key_h=225
 key_x=(wid - 14 *key_w) //2
 key_y = 100
 white = (250,250,248)
-edge = (60,60,65)
+edge = (46,46,46)
 blk_w=36
 blk_h=135
 black = (25, 25, 30)
@@ -44,6 +44,19 @@ for o, octv in enumerate(octs):
         rect = pygame.Rect(x, key_y, blk_w, blk_h)
         name = f'{sharp[i]}{octv}'
         bkeys.append((name, rect)) #now the 24 keys have their own rectangles
+tones = ['C','C#','D','D#','E','F',
+         'F#','G','G#','A','A#','B']
+left= 'zsxdcvgbhnjm'
+right= 'r5t6yu8i9o0p'
+bind ={}
+held=set()
+for i, key in enumerate(left):
+    code = pygame.key.key_code(key)
+    bind[code]= f'{tones[i]}{octs[0]}'
+for i, key in enumerate(right):
+    code = pygame.key.key_code(key)
+    bind[code]= f'{tones[i]}{octs[1]}'
+
 run = True
 while run:
     clk.tick(fps)
@@ -51,6 +64,12 @@ while run:
     for evt in pygame.event.get():
         if evt.type == pygame.QUIT:
             run = False
+        if evt.type == pygame.KEYDOWN:
+            if evt.key in bind:
+                held.add(bind[evt.key])
+            if evt.type == pygame.KEYUP:
+                if evt.key in bind:
+                    held.discard(bind[evt.key])
     mouse = None
     if pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
@@ -66,16 +85,16 @@ while run:
     scr.fill(bg)
 
     for name, rect in wkeys: 
-        color = (185,218,245) if name == mouse else white
+        color = (255, 250, 135) if name == mouse or name in held else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
         pygame.draw.rect(scr, edge, rect, 2, border_radius=4)
         label = font.render(name, True, edge)
         pos = label.get_rect(
-            center=(rect.centerx, rect.bottom - 22)
+            center=(rect.centerx, rect.bottom - 22) 
         )
         scr.blit(label, pos)
     for name, rect in bkeys:
-        color = (75, 113, 162) if name == mouse else black
+        color = (255, 250, 135) if name == mouse or name in held else black
         pygame.draw.rect(scr, color, rect, border_radius=4)
         label = smfont.render(name, True, white)
         pos = label.get_rect(
