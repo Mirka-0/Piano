@@ -85,7 +85,7 @@ while run:
             if evt.key in bind:
                 held.add(bind[evt.key])
         
-        if evt.type == pygame.K_SPACE:
+        if evt.type == pygame.KEYUP:
             if evt.key == pygame.K_SPACE:
                 pedal = False
             if evt.key in bind:
@@ -119,6 +119,15 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
+    if pedal:
+        txt= 'SUSTAIN ON'
+        col=(165, 80, 80)
+    else:
+        txt = 'SUSTAIN OFF'
+        col = (180,180,185)
+    label = font.render(txt, True, col)
+    scr.blit(label, (key_x, 45))
+    pygame.draw.circle(scr, col, (key_x-15, 54), 6)
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name == mouse or name in held else white
