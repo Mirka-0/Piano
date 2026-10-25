@@ -87,15 +87,22 @@ for i, name in enumerate(tabs):
     x=20+i*145
     rect = pygame.Rect(x, 8, 135, 32)
     tabrs[name]= rect
+btns = {
+    'REC': pygame.Rect(470, 8, 85, 30),
+    'STOP': pygame.Rect(565, 8, 85, 30),
+    'PLAY': pygame.Rect(660, 8, 85, 30),
+    'CLEAR': pygame.Rect(755, 8, 85, 30)
+}
 
 run = True
 while run:
     clk.tick(fps)
     
     for evt in pygame.event.get():
+        act = None
         if evt.type == pygame.QUIT:
             run = False
-        if evt.type == pygame.KEYDOWN:
+        elif evt.type == pygame.KEYDOWN:
             if evt.key == pygame.K_SPACE:
                 pedal = True
             if evt.key in bind:
@@ -107,6 +114,36 @@ while run:
             for chan in plays.values():
                 chan.set_volume(vol)
             if evt.key == pygame.K_TAB:
+                act = 'STOP' if rec else 'REC'
+            elif evt.key == pygame.K_RETURN:
+                act = 'PLAY'
+            elif evt.key == pygame.K_BACKSPACE:
+                act = 'CLEAR'
+        elif evt.type == pygame.KEYUP:
+            if evt.key == pygame.K_SPACE:
+                pedal = False
+            if evt.key in bind:
+                held.discard(bind[evt.key])
+        elif evt.type == pygame.MOUSEBUTTONDOWN:
+            if evt.button == 1:
+                for name, rect, in btns.items():
+                    if rect.collidepoint(evt.pos):
+                        act=name
+                        break
+        if act == 'REC' and not rec:
+                song.clear()
+                rec_prev.clear()
+                phold.clear()
+                playing = False
+                for chan in plays.values():
+                    chan.fadeout(100)
+                plays.clear()
+                prev.clear()
+                rec = True
+                rec_at = pygame.time.get_ticks
+            elif act == 'STOP' and rec:
+                now = pygame.timer
+            
                 if rec:
                     now = pygame.time.get_ticks() - rec_at
                     for name in sorted(rec_prev):
@@ -166,6 +203,19 @@ while run:
         for name in sorted(rec_prev - want):
             song.append((now, 'up', name))
         rec_prev = want.copy()
+    if playing:
+        now = pygame.time.get_ticks() - play_at
+        while step < len(song) and song[step][0] <= now:
+            time, act, name = song[step]
+            if act == 'down':
+                phold.add(name)
+            if act == 'up':
+                phold.discard(name)
+            step += 1
+        want.update(phold)
+        if step >= len(song) and not phold:
+            playing = False
+
     for name in want - prev:
         if name in plays:
             plays[name].fadeout(60)
@@ -194,7 +244,7 @@ while run:
     fill.w = int(bar.w * vol)
     pygame.draw.rect(
         scr, (85, 85, 95), bar, 
-        border_radius=8)
+        border_radius=7)
     if fill.w > 0:
         pygame.draw.rect(
             scr, (130, 190, 245), fill,
@@ -203,8 +253,19 @@ while run:
     vtxt = font.render(f'VOL {round(vol*100)}%', True, white)
     scr.blit(vtxt, (bar.x - 105, bar.y - 5))
 
+    if rec:
+        txt = 'Recording'
+        col = (255, 100, 110)
+    elif playing:
+        txt = 'Playing'
+        col = (130, 220, 165)
+    else:
+        txt = 'Ready'
+        col = (180, 180, 185)
+    label = font.render(txt, True, col)
+    scr.blit(label, (key_x+260, 45))
     for name, rect in wkeys: 
-        color = (255, 250, 135) if name == mouse or name in held else white
+        color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
         pygame.draw.rect(scr, edge, rect, 2, border_radius=4)
         label = font.render(name, True, edge)
@@ -213,7 +274,7 @@ while run:
         )
         scr.blit(label, pos)
     for name, rect in bkeys:
-        color = (255, 250, 135) if name == mouse or name in held else black
+        color = (255, 250, 135) if name in want else black
         pygame.draw.rect(scr, color, rect, border_radius=4)
         txtcol = black if color != black else white
         label = smfont.render(name, True, txtcol)
