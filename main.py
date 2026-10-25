@@ -69,6 +69,8 @@ for name, rect in wkeys + bkeys:
     snd[name] = mixer.Sound(str(path))
 
 plays = {}
+pedal = False
+prev = set()
 
 run = True
 while run:
@@ -77,10 +79,15 @@ while run:
     for evt in pygame.event.get():
         if evt.type == pygame.QUIT:
             run = False
-        elif evt.type == pygame.KEYDOWN:
+        if evt.type == pygame.KEYDOWN:
+            if evt.key == pygame.K_SPACE:
+                pedal = True
             if evt.key in bind:
                 held.add(bind[evt.key])
-        elif evt.type == pygame.KEYUP:
+        
+        if evt.type == pygame.K_SPACE:
+            if evt.key == pygame.K_SPACE:
+                pedal = False
             if evt.key in bind:
                 held.discard(bind[evt.key])
     mouse = None
