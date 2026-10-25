@@ -67,7 +67,9 @@ for name, rect in wkeys + bkeys:
     file = name.replace('#','s')+ '.ogg'
     path = audio / file
     snd[name] = mixer.Sound(str(path))
+    
 plays = {}
+
 run = True
 while run:
     clk.tick(fps)
