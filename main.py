@@ -126,7 +126,7 @@ while run:
                 held.discard(bind[evt.key])
         elif evt.type == pygame.MOUSEBUTTONDOWN:
             if evt.button == 1:
-                for name, rect, in btns.items():
+                for name, rect in btns.items():
                     if rect.collidepoint(evt.pos):
                         act=name
                         break
@@ -154,7 +154,7 @@ while run:
             phold.clear()
             for chan in plays.values():
                 chan.fadeout(100)
-            plays. clear()
+            plays.clear()
             prev.clear()
         elif act == 'CLEAR':
             song.clear()
@@ -222,7 +222,7 @@ while run:
     for name, rect in btns.items():
         active = (
             (name == 'REC' and rec)
-            or(name == 'PLAY' and playing)
+            or (name == 'PLAY' and playing)
         )
         if name == 'REC' and active:
             col = (200, 41, 9)
@@ -230,9 +230,7 @@ while run:
             col = (0, 145, 73)
         else:
             col = (70, 70, 80)
-        pygame.draw.rect(
-            scr, col, rect, border_radius=5
-        )
+        pygame.draw.rect(scr, col, rect, border_radius=5)
         label = font.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
