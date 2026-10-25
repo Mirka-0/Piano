@@ -1,5 +1,6 @@
 import pygame
 from pygame import mixer
+from pathlib import Path
 
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -59,6 +60,14 @@ for i, key in enumerate(left):
 for i, key in enumerate(right):
     code = pygame.key.key_code(key)
     bind[code]= f'{tones[i]}{octs[1]}'
+
+audio = Path(__file__).resolve().parent / 'audio'
+snd = {}
+for name, rect in wkeys + bkeys:
+    file = name.replace('#','s')+ '.ogg'
+    path = audio / file
+    snd[name] = mixer.Sound(str(path))
+plays = {} 
 
 run = True
 while run:
