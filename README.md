@@ -16,3 +16,7 @@ og repository: https://github.com/nbrosowsky/tonejs-instruments
 og piano recordings from VS02 https://github.com/nbrosowsky/tonejs-instruments/blob/master/sample-source-info.txt
 Audio distribution: Makefully-Studios from tonejs-instrument-piano-ogg@1.1.0
 I didn't make any type of modification to the downloaded audio samples
+
+*mirkala of the future don't foget to add a guide
+maybe add a synthetizer 
+or a drum? :0 OMG OR THE THINGY WITH SOHNDS BEATBOx? my brain is not braining im so sorry

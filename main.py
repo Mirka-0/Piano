@@ -270,13 +270,13 @@ while run:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
-        txt = 'Playing'
+        txt = 'Playing your song!'
         col = (130, 220, 165)
     elif song: 
-        txt = 'Song is readyy'
+        txt = 'Song is readyy :D'
         col = (130, 190, 245)
     else:
-        txt = 'Ready'
+        txt = 'Ready to play!'
         col = (180, 180, 185)
     label = font.render(txt, True, col)
     scr.blit(label, (key_x+260, 45))
