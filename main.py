@@ -3,8 +3,8 @@ from pygame import mixer
 
 pygame.init()
 pygame.mixer.set_num_channels(50)
-tfont = pygame.font.Font('extras/ExtraBlur.ttf', 40)
-font = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 17)
+tfont = pygame.font.Font('extras/OpenDyslexic-Bold.ot', 40)
+font = pygame.font.SysFont('Arial', 17)
 wid = 960
 hgt = 360
 scr = pygame.display.set_mode([wid, hgt])
@@ -20,6 +20,12 @@ key_x=(wid - 14 *key_w) //2
 key_y = 100
 white = (250,250,248)
 edge = (60,60,65)
+blk_w=36
+blk=135
+black = (25, 25, 30)
+sharp = ['C#','D#','F#','G#','A#']
+spots = [0,1,3,4,5]
+smfont = pygame.ofnt.SysFont('Arial', 12)
 
 run = True
 while run:
