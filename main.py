@@ -3,7 +3,7 @@ from pygame import mixer
 
 pygame.init()
 pygame.mixer.set_num_channels(50)
-tfont = pygame.font.Font('extras/OpenDyslexic-Bold.ot', 40)
+tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
 font = pygame.font.SysFont('Arial', 17)
 wid = 960
 hgt = 360
@@ -21,11 +21,11 @@ key_y = 100
 white = (250,250,248)
 edge = (60,60,65)
 blk_w=36
-blk=135
+blk_h=135
 black = (25, 25, 30)
 sharp = ['C#','D#','F#','G#','A#']
 spots = [0,1,3,4,5]
-smfont = pygame.ofnt.SysFont('Arial', 12)
+smfont = pygame.font.SysFont('Arial', 12)
 
 run = True
 while run:
@@ -49,5 +49,18 @@ while run:
         label = font.render(name, True, edge)
         pos = label.get_rect(center=(rect.centerx, rect.bottom - 22))
         scr.blit(label, pos)
+
+        for o, octv in enumerate(octs):
+            for i, spot in enumerate(spots):
+                x = key_x+(o*7 +spot+1)* key_w
+                x -= blk_w // 2
+                rect = pygame.Rect(x, key_y, blk_w, blk_h)
+                pygame.draw.rect(scr, black, rect, border_radius=4)
+                name = f'{sharp[i]}{octv}'
+                label = smfont.render(name, True, white)
+                pos = label.get_rect(
+                    center=(rect.centerx, rect.bottom - 18)
+                )
+                scr.blit(label, pos)
     pygame.display.flip()
 pygame.quit()
