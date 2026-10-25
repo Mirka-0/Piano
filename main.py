@@ -131,54 +131,42 @@ while run:
                         act=name
                         break
         if act == 'REC' and not rec:
-                song.clear()
-                rec_prev.clear()
-                phold.clear()
-                playing = False
-                for chan in plays.values():
-                    chan.fadeout(100)
-                plays.clear()
-                prev.clear()
-                rec = True
-                rec_at = pygame.time.get_ticks
-            elif act == 'STOP' and rec:
-                now = pygame.timer
-            
-                if rec:
-                    now = pygame.time.get_ticks() - rec_at
-                    for name in sorted(rec_prev):
-                        song.append((now, 'up', name))
-                    rec = False
-                else:
-                    song.clear()
-                    rec_prev.clear()
-                    phold.clear()
-                    playing = False
-                    rec = True
-                    rec_at = pygame.time.get_ticks()
-            if evt.key == pygame.K_RETURN:
-                if song and not rec:
-                    playing = True
-                    play_at = pygame.time.get_ticks()
-                    step = 0
-                    phold.clear()
-                    for chan in plays.values():
-                        chan.fadeout(100)
-                    plays.clear()
-                    prev.clear()
+            song.clear()
+            rec_prev.clear()
+            phold.clear()
+            playing = False
+            for chan in plays.values():
+                chan.fadeout(100)
+            plays.clear()
+            prev.clear()
+            rec = True
+            rec_at = pygame.time.get_ticks()
+        elif act == 'STOP' and rec:
+            now = pygame.time.get_ticks() - rec_at
+            for name in sorted(rec_prev):
+                song.append((now, 'up',name)) 
+            rec_prev.clear()
+            rec = False
+        elif act == 'PLAY' and song and not rec:
+            playing = True
+            play_at = pygame.time.get_ticks()
+            step = 0
+            phold.clear()
+            for chan in plays.values():
+                chan.fadeout(100)
+            plays. clear()
+            prev.clear()
+        elif act == 'CLEAR':
+            song.clear()
+            rec_prev.clear()
+            phold.clear()
+            rec = False
+            playing = False
+            for chan in plays.values():
+                chan.fadeout(100)
+            plays.clear()
+            prev.clear()
 
-            if evt.key == pygame.K_BACKSPACE:
-                song.clear()
-                rec_prev.clear()
-                phold.clear()
-                rec = False
-                playing = False
-
-        if evt.type == pygame.KEYUP:
-            if evt.key == pygame.K_SPACE:
-                pedal = False
-            if evt.key in bind:
-                held.discard(bind[evt.key])
     mouse = None
     if pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
@@ -230,6 +218,24 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
+
+    for name, rect in btns.items():
+        active = (
+            (name == 'REC' and rec)
+            or(name == 'PLAY' and playing)
+        )
+        if name == 'REC' and active:
+            col = (200, 41, 9)
+        elif active:
+            col = (0, 145, 73)
+        else:
+            col = (70, 70, 80)
+        pygame.draw.rect(
+            scr, col, rect, border_radius=5
+        )
+        label = font.render(name, True, white)
+        pos = label.get_rect(center=rect.center)
+        scr.blit(label, pos)
     if pedal:
         txt= 'PEDAL ON'
         col=(165, 47, 47)
