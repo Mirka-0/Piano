@@ -72,6 +72,13 @@ plays = {}
 pedal = False
 prev = set()
 vol = 0.7
+tabs= ['PIANO', 'METRONOME', 'TUNER']
+taab = 'PIANO'
+tabrs ={}
+for i, name in enumerate(tabs):
+    x=20+i*145
+    rect = pygame.Rect(x, 8, 135, 32)
+    tabrs[name]= rect
 
 run = True
 while run:
