@@ -141,12 +141,21 @@ while run:
             prev.clear()
             rec = True
             rec_at = pygame.time.get_ticks()
-        elif act == 'STOP' and rec:
-            now = pygame.time.get_ticks() - rec_at
-            for name in sorted(rec_prev):
-                song.append((now, 'up',name)) 
-            rec_prev.clear()
-            rec = False
+        elif act == 'STOP':
+            if rec:
+                now = pygame.time.get_ticks() - rec_at
+                for name in sorted(rec_prev):
+                    song.append((now, 'up', name))
+                rec_prev.clear()
+                rec = False
+            elif playing:
+                playing = False
+                phold.clear()
+                for chan in plays.values():
+                    chan.fadeout(150)
+                plays.clear()
+                prev.clear()
+            
         elif act == 'PLAY' and song and not rec:
             playing = True
             play_at = pygame.time.get_ticks()
@@ -263,6 +272,9 @@ while run:
     elif playing:
         txt = 'Playing'
         col = (130, 220, 165)
+    elif song: 
+        txt = 'Song is readyy'
+        col = (130, 190, 245)
     else:
         txt = 'Ready'
         col = (180, 180, 185)
