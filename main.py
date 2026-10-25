@@ -84,32 +84,3 @@ while run:
         scr.blit(label, pos)
     pygame.display.flip()
 pygame.quit()
-
-    for i in range(14):
-        x = key_x + i*key_w
-        y=key_y
-        rect = pygame.Rect(x,y, key_w, key_h)
-        pygame.draw.rect(scr, white, rect, border_radius=4)
-        pygame.draw.rect(scr, edge,rect, 2, border_radius=4)
-
-        note = notes[i%7]
-        octv = octs[i//7]
-        name= f'{note}{octv}'
-        label = font.render(name, True, edge)
-        pos = label.get_rect(center=(rect.centerx, rect.bottom - 22))
-        scr.blit(label, pos)
-
-        for o, octv in enumerate(octs):
-            for i, spot in enumerate(spots):
-                x = key_x+(o*7 +spot+1)* key_w
-                x -= blk_w // 2
-                rect = pygame.Rect(x, key_y, blk_w, blk_h)
-                pygame.draw.rect(scr, black, rect, border_radius=4)
-                name = f'{sharp[i]}{octv}'
-                label = smfont.render(name, True, white)
-                pos = label.get_rect(
-                    center=(rect.centerx, rect.bottom - 18)
-                )
-                scr.blit(label, pos)
-    pygame.display.flip()
-pygame.quit()
