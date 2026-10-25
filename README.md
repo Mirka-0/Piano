@@ -9,3 +9,10 @@ next time i'll make a clarinet, it'll be easer but it's be horrible to draw
 decided to make it to C4 to B5, for now I'm regreting nothing :D
 knowing piano keys follow the C# D# | gaaaap | F# G# A# | gaaaap | i'll make a variable to follow the pattern instead of making each one by hand :D
 big thanks to https://www.color-hex.com/ and mostly to https://www.webfx.com/web-design/color-picker/color-chart/ 
+shotout to Nicholaus P. Brosowsky https://github.com/nbrosowsky/tonejs-instruments !! https://nbrosowsky.github.io/tonejs-instruments/demo.html
+i also used https://www.jsdelivr.com/package/npm/tonejs-instrument-piano-ogg
+Piano samples sourced from tonejs-instruments, a project by Nicholaus P. Brosowsky
+og repository: https://github.com/nbrosowsky/tonejs-instruments
+og piano recordings from VS02 https://github.com/nbrosowsky/tonejs-instruments/blob/master/sample-source-info.txt
+Audio distribution: Makefully-Studios from tonejs-instrument-piano-ogg@1.1.0
+I didn't make any type of modification to the downloaded audio samples
