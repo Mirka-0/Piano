@@ -1,8 +1,11 @@
 import pygame
 from pygame import mixer
 
+
+pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
 pygame.mixer.set_num_channels(50)
+
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
 font = pygame.font.SysFont('Arial', 17)
 wid = 960
