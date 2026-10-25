@@ -35,7 +35,7 @@ for i in range(14):
     note = notes[i % 7]
     octv= octs[i//7]
     name = f'{note}{octv}'
-    wkeys.append((name, rect)) #now bob knows where the white keys are!
+    wkeys.append((name, rect))
 
 for o, octv in enumerate(octs):
     for i, spot in enumerate(spots):
