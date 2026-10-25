@@ -71,6 +71,7 @@ for name, rect in wkeys + bkeys:
 plays = {}
 pedal = False
 prev = set()
+vol = 0.7
 
 run = True
 while run:
@@ -84,6 +85,12 @@ while run:
                 pedal = True
             if evt.key in bind:
                 held.add(bind[evt.key])
+            if evt.key in (pygame.K_EQUALS, pygame.K_PLUS):
+                vol = min(1.0, round(vol + 0.1, 2))
+            if evt.key ==pygame.K_MINUS:
+                vol = max(0.0, round(vol - 0.1, 2))
+            for chan in plays.values():
+                chan.set_volume(vol)
         
         if evt.type == pygame.KEYUP:
             if evt.key == pygame.K_SPACE:
@@ -111,7 +118,8 @@ while run:
             plays[name].fadeout(60)
         chan = snd[name].play()
         if chan is not None:
-            plays[name]=chan
+            chan.set_volume(vol)
+            plays[name] = chan
     if not pedal:
         for name in list(plays):
             if name not in want:
@@ -127,7 +135,7 @@ while run:
         col = (180,180,185)
     label = font.render(txt, True, col)
     scr.blit(label, (key_x, 45))
-    pygame.draw.circle(scr, col, (key_x-15, 54), 7) #the youtube videos have tricked me, i was promised a decent looking circle :( mirkala of the future its ((x,y), r) maybe the pixels hate me
+    pygame.draw.circle(scr, col, (key_x-15, 54), 7) #((x,y), r)
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name == mouse or name in held else white
