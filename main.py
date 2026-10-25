@@ -136,6 +136,21 @@ while run:
     label = font.render(txt, True, col)
     scr.blit(label, (key_x, 45))
     pygame.draw.circle(scr, col, (key_x-15, 54), 7) #((x,y), r)
+    bar= pygame.Rect(key_x+640, 47, 150, 12)
+    fill = bar.copy()
+    fill.w = int(bar.w*vol)
+    pygame.draw.rect(scr, (85, 85, 95), bar, border_radius=7)
+    if fill.w > 0:
+        rad = 6 if fill.w >= bar.width - 6 else [6, 0, 0, 6]
+        pygame.draw.rect(
+            scr, (130, 190, 245), fill,
+            border_top_left_radius=rad[0] if isinstance(rad, list) else rad,
+            border_top_right_radius=[1] if isinstance(rad, list) else rad,
+            border_bottom_right_radius=rad[2] if isinstance(rad, list) else rad,
+            border_bottom_left_radius=[3] if isinstance(rad, list) else rad
+        )
+    vtxt = font.render(f'VOL {round(vol*300)}%', True, white)
+    scr.blit(vtxt, (bar.x - 105, bar.y - 5))
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name == mouse or name in held else white
