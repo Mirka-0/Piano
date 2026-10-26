@@ -1,6 +1,7 @@
 import pygame
 from pygame import mixer
 from pathlib import Path
+import json
 
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -73,10 +74,13 @@ plays = {}
 pedal = False
 prev = set()
 vol = 0.7
-song =[] #to store my notesss
+song =[]
+folder = Path(__file__).resolve().parent / 'songs'
+msg = ''
+sfile = folder / 'last_song.json'
 rec = False
 rec_at = 0
-rec_prev = set() #the memory kinda
+rec_prev = set()
 playing = False
 play_at =0
 step =0
@@ -133,6 +137,8 @@ while run:
                     if rect.collidepoint(evt.pos):
                         act=name
                         break
+        if act in ('REC','STOP','PLAY','CLEAR',):
+            msg = ''
         if act == 'REC' and not rec:
             song.clear()
             rec_prev.clear()
@@ -178,6 +184,16 @@ while run:
                 chan.fadeout(100)
             plays.clear()
             prev.clear()
+        elif act == 'SAVE':
+            if rec:
+                msg = 'Stooop recordingg!'
+            elif not song:
+                msg = 'No song to save D:'
+            else:
+                folder.mkdir(exist_ok=True)
+                with sfile.open('w', encoding='utf-8') as f:
+                    json.dump(song, f, indent=2)
+                msg = 'Song is saved!! :D'
 
     mouse = None
     if pygame.mouse.get_pressed()[0]:
@@ -269,7 +285,10 @@ while run:
     vtxt = font.render(f'VOL {round(vol*100)}%', True, white)
     scr.blit(vtxt, (bar.x - 115, 105))
 
-    if rec:
+    if msg:
+        txt = msg
+        col = (186, 0, 97)
+    elif rec:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
