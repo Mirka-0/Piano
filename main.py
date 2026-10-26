@@ -102,8 +102,12 @@ btns = {
     'SAVE': pygame.Rect(912, 18, 78, 28),
     'LOAD': pygame.Rect(1000, 18, 78, 28),
     'PREV': pygame.Rect(912, 58, 78, 28),
-    'NEXT': pygame.Rect(1000, 58, 78, 28)
+    'NEXT': pygame.Rect(1000, 58, 78, 28),
+    'RENAME': pygame.Rect(1090, 58, 95, 28)
 }
+edit = False
+typed = ''
+target = None
 
 run = True
 while run:
@@ -192,7 +196,13 @@ while run:
             files = sorted(folder.glob('*.json'))
             if not files:
                 msg = 'No saved songs D:'
-            else:py
+            else:
+                if act == 'PREV':
+                    pick = (pick - 1)% len(files)
+                else:
+                    pick = (pick+1)% len(files)
+                act = 'LOAD'
+                msg = f'Selected {files[pick].stem}'
         elif act == 'SAVE':
             if rec:
                 msg = 'Stooop recordingg!'
@@ -213,7 +223,7 @@ while run:
                     msg = f'{path.stem} is saved!! :D'
                 except OSError:
                     msg= 'Could not save the song :('
-        elif act == 'LOAD':
+        if act == 'LOAD':
             if rec:
                 msg = 'Stooop recordingg!'
             elif not files:
@@ -355,6 +365,14 @@ while run:
         col = (235, 235, 237)
     label = font.render(txt, True, col)
     scr.blit(label, label.get_rect(center=(wid //2, 114)))
+    if files:
+        name= files[pick].stem
+        txt = f'Library: {name}'
+    else:
+        txt= 'Library: no saved songs'
+    label= font.render(txt, True, white)
+    pos= label.get_rect(center=(wid //2, 165))
+    scr.blit(label, pos)
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
