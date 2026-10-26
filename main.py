@@ -115,6 +115,38 @@ while run:
     
     for evt in pygame.event.get():
         act = None
+        if edit and evt.type != pygame.QUIT:
+            if evt.type == pygame.TEXTINPUT:
+                for ch in evt.text:
+                    if len(typed) < 24:
+                        if ch.isalnum() or ch in ' _-':
+                            typed += ch
+            elif evt.type == pygame.KEYDOWN:
+                if evt.key == pygame.K_BACKSPACE:
+                    typed = typed[:-1]
+                elif evt.key == pygame.K_ESCAPE:
+                    edit = False
+                    pygame.key.stop_text_input()
+                    msg = 'Rename is cancelled'
+                elif evt.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+                    name = typed.strip()
+                    if not name:
+                        msg = 'Please enter a name :D'
+                    else:
+                        dest = folder / f'{name}.json'
+                        if dest.exists() and dest != target:
+                            msg = 'That name already exists D:'
+                        else:
+                            try:
+                                target.rename(dest)
+                                files = sorted(folder.glob('*.json'))
+                                pick = files.index(dest)
+                                edit= False
+                                pygame.key.stop_text_input()
+                                msg = f'You just renamed your song to: {name}!'
+                            except OSError:
+                                msg = 'Could not rename the song :(('
+            continue
         if evt.type == pygame.QUIT:
             run = False
         elif evt.type == pygame.KEYDOWN:
