@@ -209,11 +209,11 @@ while run:
         elif act == 'LOAD':
             if rec:
                 msg = 'Stooop recordingg!'
-            elif not sfile.exists():
+            elif not files:
                 msg = 'No saved songs :]'
             else:
                 try:
-                    with sfile.open('r', encoding='utf-8') as f:
+                    with files[pick].open('r', encoding='utf-8') as f:
                         data=json.load(f) #the goat
                     valid = (
                         isinstance(data, list)
