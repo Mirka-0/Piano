@@ -190,10 +190,47 @@ while run:
             elif not song:
                 msg = 'No song to save D:'
             else:
-                folder.mkdir(exist_ok=True)
-                with sfile.open('w', encoding='utf-8') as f:
-                    json.dump(song, f, indent=2)
-                msg = 'Song is saved!! :D'
+                try:
+                    folder.mkdir(exist_ok=True)
+                    with sfile.open('w', encoding='utf-8') as f:
+                        json.dump(song, f, indent=2) #ily json.sump() <3
+                    msg = 'Song is saved!! :D'
+                except OSError:
+                    msg= 'Could not save the song :('
+        elif act == 'LOAD':
+            if rec:
+                msg = 'Stooop recordingg!'
+            elif not sfile.exists():
+                msg = 'No saved songs :]'
+            else:
+                try:
+                    with sfile.open('r', encoding='utf-8') as f:
+                        data=json.load(f) #the goat
+                    valid = (
+                        isinstance(data, list)
+                        and all(
+                            isinstance(item, list)
+                            and len(item) ==3
+                            and type(item[0]) is int
+                            and item[0] >= 0
+                            and item[1] in ('down','up')
+                            and isinstance(item[2],str)
+                            and item[2] in snd for item in data
+                        )
+                    )
+                    if not valid:
+                        msg = 'Invalid file D:'
+                    else:
+                        song = [tuple(item) for item in data]
+                        playing = False
+                        phold.clear()
+                        for chan in plays.values():
+                            chan.fadeout(100)
+                        plays.clear()
+                        prev.clear()
+                        msg='Song has been loaded :DD'
+                except (OSError, json.JSONDecodeError):
+                    msg = 'Could not load song :('
 
     mouse = None
     if pygame.mouse.get_pressed()[0]:
@@ -287,7 +324,7 @@ while run:
 
     if msg:
         txt = msg
-        col = (186, 0, 97)
+        col = (210, 125, 45)
     elif rec:
         txt = 'Recording'
         col = (255, 100, 110)
@@ -299,7 +336,7 @@ while run:
         col = (130, 190, 245)
     else:
         txt = 'Ready to play!'
-        col = (180, 180, 185)
+        col = (235, 235, 237)
     label = font.render(txt, True, col)
     scr.blit(label, label.get_rect(center=(wid //2, 114)))
     for name, rect in wkeys: 
