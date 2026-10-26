@@ -76,8 +76,10 @@ prev = set()
 vol = 0.7
 song =[]
 folder = Path(__file__).resolve().parent / 'songs'
+files = sorted(folder.glob('*.json')) #ily glob
+pick = len(files)-1 if files else 0
 msg = ''
-sfile = folder / 'last_song.json'
+
 rec = False
 rec_at = 0
 rec_prev = set()
@@ -192,9 +194,16 @@ while run:
             else:
                 try:
                     folder.mkdir(exist_ok=True)
-                    with sfile.open('w', encoding='utf-8') as f:
-                        json.dump(song, f, indent=2) #ily json.sump() <3
-                    msg = 'Song is saved!! :D'
+                    num=1
+                    path= folder / f'song_{num:03}.json'
+                    while path.exists():
+                        num += 1
+                        path = folder / f'song_{num:03}.json'
+                    with path.open('w', encoding='utf-8') as f:
+                        json.dump(song, f, indent=2)
+                    files = sorted(folder.glob('*.json'))
+                    pick = files.index(path)
+                    msg = f'Song {path.stem} is saved!! :D'
                 except OSError:
                     msg= 'Could not save the song :('
         elif act == 'LOAD':
