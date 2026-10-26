@@ -21,6 +21,8 @@ I didn't make any type of modification to the downloaded audio samples
 tab: start or stop recording
 enter: replay your recorded song
 delete: eliminate the song
+use prev next to select the song you want to rename (#need to look for the <> emojis)
+esc to cancel renaming
 maybe add a synthetizer 
 or a drum? :0 OMG OR THE THINGY WITH SOHNDS BEATBOx? my brain is not braining im so sorry
 shotout to tech with tim for his videos on how to use json with python and techknowfy and just youtube shotout to youtube dude

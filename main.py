@@ -235,8 +235,20 @@ while run:
                     pick = (pick+1)% len(files)
                 act = 'LOAD'
                 msg = f'Selected {files[pick].stem}'
+        elif act == 'RENAME':
+            if rec or playing:
+                msg = 'Stoop recording or playback first!'
+            elif not files:
+                msg = 'Save a song firsttt :D'
+            else: 
+                target = files[pick]
+                typed = target.stem[:24]
+                held.clear()
+                edit = True
+                pygame.key.start_text_input()
+                msg='Enter your new song name!'
         elif act == 'SAVE':
-            if rec:
+            if rec or playing:
                 msg = 'Stooop recordingg!'
             elif not song:
                 msg = 'No song to save D:'
@@ -286,7 +298,7 @@ while run:
                             chan.fadeout(100)
                         plays.clear()
                         prev.clear()
-                        msg='Song has been loaded :DD'
+                        msg='Songs have been loaded :DD'
                 except (OSError, json.JSONDecodeError):
                     msg = 'Could not load song :('
 
@@ -397,14 +409,31 @@ while run:
         col = (235, 235, 237)
     label = font.render(txt, True, col)
     scr.blit(label, label.get_rect(center=(wid //2, 114)))
-    if files:
-        name= files[pick].stem
-        txt = f'Library: {name}'
+    if edit:
+        field = pygame.Rect(wid // 2-210, 146, 420, 40)
+        pygame.draw.rect(
+            scr, (65, 65, 75), field, border_radius=7
+        )
+        pygame.draw.rect(
+            scr, (53, 152, 15), field, 2, border_radius=7
+        )
+        txt = font.render(typed + '|', True, white)
+        scr.blit(txt, (field.x+12, field.y+10))
+        hint = smfont.render(
+            'ENTER = Rename     ESC = Cancel',
+            True, (190, 190, 195)
+        )
+        pos = hint.get_rect(center=(wid // 2, 196))
+        scr.blit(hint, pos)
     else:
-        txt= 'Library: no saved songs'
-    label= font.render(txt, True, white)
-    pos= label.get_rect(center=(wid //2, 165))
-    scr.blit(label, pos)
+        if files:
+            name = files[pick].stem
+            txt = f'Library: {name}'
+        else:
+            txt = 'Library: no saved songs D:' #would it be weird if it said library says? idk man D:, should seriously consider to use kaomojis bitmojis? isk the super expressive ones >:D
+        label = font.render(txt, True, white)
+        pos = label.get_rect(center=(wid //2, 165))
+        scr.blit(label, pos)
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
