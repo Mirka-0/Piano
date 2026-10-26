@@ -9,8 +9,10 @@ pygame.mixer.set_num_channels(50)
 
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
 font = pygame.font.SysFont('Arial', 17)
-wid = 960
-hgt = 360
+bfont = pygame.font.SysFont('Arial', 15)
+smfont = pygame.font.SysFont('Arial', 12)
+wid = 1200
+hgt = 540
 scr = pygame.display.set_mode([wid, hgt])
 pygame.display.set_caption('PIANO')
 bg = (35,35,40)
@@ -18,18 +20,17 @@ fps=60
 clk = pygame.time.Clock()
 notes = ['C','D','E','F','G','A','B']
 octs = [4,5]
-key_w=58
-key_h=225
+key_w=68
+key_h=275
 key_x=(wid - 14 *key_w) //2
-key_y = 100
+key_y = 210
 white = (250,250,248)
 edge = (46,46,46)
-blk_w=36
-blk_h=135
+blk_w=40
+blk_h=160
 black = (25, 25, 30)
 sharp = ['C#','D#','F#','G#','A#']
 spots = [0,1,3,4,5]
-smfont = pygame.font.SysFont('Arial', 12)
 wkeys = []
 bkeys = []
 
@@ -88,10 +89,12 @@ for i, name in enumerate(tabs):
     rect = pygame.Rect(x, 8, 135, 32)
     tabrs[name]= rect
 btns = {
-    'REC': pygame.Rect(470, 8, 85, 30),
-    'STOP': pygame.Rect(565, 8, 85, 30),
-    'PLAY': pygame.Rect(660, 8, 85, 30),
-    'CLEAR': pygame.Rect(755, 8, 85, 30)
+    'REC': pygame.Rect(560, 18, 78, 28),
+    'STOP': pygame.Rect(648, 18, 78, 28),
+    'PLAY': pygame.Rect(736, 18, 78, 28),
+    'CLEAR': pygame.Rect(824, 18, 78, 28),
+    'SAVE': pygame.Rect(912, 18, 78, 28),
+    'LOAD': pygame.Rect(1000, 18, 78, 28)
 }
 
 run = True
@@ -239,8 +242,8 @@ while run:
             col = (0, 145, 73)
         else:
             col = (70, 70, 80)
-        pygame.draw.rect(scr, col, rect, border_radius=5)
-        label = font.render(name, True, white)
+        pygame.draw.rect(scr, col, rect, border_radius=4)
+        label = bfont.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
     if pedal:
@@ -250,9 +253,9 @@ while run:
         txt = 'PEDAL OFF'
         col = (180,180,185)
     label = font.render(txt, True, col)
-    scr.blit(label, (key_x, 45))
-    pygame.draw.circle(scr, col, (key_x-15, 54), 7) #((x,y), r)
-    bar= pygame.Rect(key_x+640, 47, 150, 14)
+    scr.blit(label, (key_x, 105))
+    pygame.draw.circle(scr, col, (key_x-15, 114), 7) #((x,y), r)
+    bar= pygame.Rect(wid - 205, 110, 150, 14)
     fill = bar.copy()
     fill.w = int(bar.w * vol)
     pygame.draw.rect(
@@ -260,11 +263,11 @@ while run:
         border_radius=7)
     if fill.w > 0:
         pygame.draw.rect(
-            scr, (130, 190, 245), fill,
+            scr, (186, 0, 97), fill,
             border_radius=7
         )
     vtxt = font.render(f'VOL {round(vol*100)}%', True, white)
-    scr.blit(vtxt, (bar.x - 105, bar.y - 5))
+    scr.blit(vtxt, (bar.x - 115, 105))
 
     if rec:
         txt = 'Recording'
@@ -279,7 +282,7 @@ while run:
         txt = 'Ready to play!'
         col = (180, 180, 185)
     label = font.render(txt, True, col)
-    scr.blit(label, (key_x+260, 45))
+    scr.blit(label, label.get_rect(center=(wid //2, 114)))
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
