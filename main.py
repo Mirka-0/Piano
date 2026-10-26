@@ -100,7 +100,9 @@ btns = {
     'PLAY': pygame.Rect(736, 18, 78, 28),
     'CLEAR': pygame.Rect(824, 18, 78, 28),
     'SAVE': pygame.Rect(912, 18, 78, 28),
-    'LOAD': pygame.Rect(1000, 18, 78, 28)
+    'LOAD': pygame.Rect(1000, 18, 78, 28),
+    'PREV': pygame.Rect(912, 58, 78, 28),
+    'NEXT': pygame.Rect(1000, 58, 78, 28)
 }
 
 run = True
@@ -186,6 +188,11 @@ while run:
                 chan.fadeout(100)
             plays.clear()
             prev.clear()
+        elif act in ('PREV', 'NEXT'):
+            files = sorted(folder.glob('*.json'))
+            if not files:
+                msg = 'No saved songs D:'
+            else:py
         elif act == 'SAVE':
             if rec:
                 msg = 'Stooop recordingg!'
@@ -203,7 +210,7 @@ while run:
                         json.dump(song, f, indent=2)
                     files = sorted(folder.glob('*.json'))
                     pick = files.index(path)
-                    msg = f'Song {path.stem} is saved!! :D'
+                    msg = f'{path.stem} is saved!! :D'
                 except OSError:
                     msg= 'Could not save the song :('
         elif act == 'LOAD':
