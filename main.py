@@ -9,6 +9,7 @@ pygame.init()
 pygame.mixer.set_num_channels(50)
 
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
+tabft = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 18)
 font = pygame.font.SysFont('Arial', 17)
 bfont = pygame.font.SysFont('Arial', 15)
 smfont = pygame.font.SysFont('Arial', 12)
@@ -124,8 +125,8 @@ tab = 'PIANO'
 tabrs ={}
 
 for i, name in enumerate(tabs):
-    x=20+i*145
-    rect = pygame.Rect(x, 65, 135, 32)
+    x=20 + i * 145
+    rect = pygame.Rect(x, 18, 135, 38)
     tabrs[name]= rect
 
 def dtab():
@@ -135,7 +136,7 @@ def dtab():
         else:
             col = (70, 70, 80)
         pygame.draw.rect(scr, col, rect, border_radius=7)
-        label = bfont.render(name, True, white)
+        label = tabft.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
 
