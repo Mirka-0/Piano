@@ -403,18 +403,10 @@ while run:
                 ]
 
             pygame.draw.lines(scr, gray, False, pts, 3)
-            
-            if name == 'REC' and rec:
-                bgcol = (200, 41, 9)
-                col = white
-            elif hover:
-                bgcol = (90, 90, 100)
-                col = (255, 180, 210)
-            else: 
-                bgcol = (70, 70, 80)
-                col = white
-            pygame.draw.rect(scr, bgcol, rect, border_radius=4)
-            label = bfont.render(name, True, col)
+
+        else: 
+            pygame.draw.rect(scr, (70,70,80), rect, border_radius=4)
+            label = bfont.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
         
