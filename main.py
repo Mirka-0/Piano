@@ -373,7 +373,13 @@ while run:
     for name, rect in btns.items():
         x, y = rect.center
         if name == 'PLAY':
-            col= (130, 220, 165) if playing or hover else white
+            pts = [
+                (x-7, y-10),
+                (x-7, y+10),
+                (x+10, y)
+            ]
+            pygame.draw.polygon(scr, gray, pts)
+            
         elif name == 'STOP':
             col = (255, 100, 1120) if rec or playing or hover else white
         else:
