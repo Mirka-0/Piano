@@ -128,7 +128,7 @@ for i, name in enumerate(tabs):
     rect = pygame.Rect(x, 65, 135, 32)
     tabrs[name]= rect
 
-def draw_tabls():
+def dtab():
     for name, rect in tabrs.items():
         if name == tab:
             col = (0, 186, 177)
@@ -351,7 +351,7 @@ while run:
     mouse = None
     if tab != 'PIANO':
         scr.fill(bg)
-        draw_tabls()
+        dtab()
         title= tfont.render(tab, True, white)
         pos = title.get_rect(center=(wid // 2, 210))
         scr.blit(title, pos)
@@ -416,7 +416,7 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
-    draw_tabls
+    dtab()
 
     for name, rect in btns.items():
         x, y = rect.center
