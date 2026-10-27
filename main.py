@@ -152,7 +152,7 @@ while run:
                     edit = False
                     pygame.key.stop_text_input()
                     msg = 'Rename is cancelled'
-                    
+
                 elif evt.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
                     name = typed.strip()
                     if not name:
@@ -172,6 +172,7 @@ while run:
                             except OSError:
                                 msg = 'Could not rename the song :(('
             continue
+
         if evt.type == pygame.QUIT:
             run = False
         elif evt.type == pygame.KEYDOWN:
@@ -181,7 +182,7 @@ while run:
                 held.add(bind[evt.key])
             if evt.key in (pygame.K_EQUALS, pygame.K_PLUS):
                 vol = min(1.0, round(vol + 0.1, 2))
-            if evt.key ==pygame.K_MINUS:
+            elif evt.key ==pygame.K_MINUS:
                 vol = max(0.0, round(vol - 0.1, 2))
             for chan in plays.values():
                 chan.set_volume(vol)
@@ -202,20 +203,20 @@ while run:
                     if rect.collidepoint(evt.pos):
                         act=name
                         break
+
         if act in ('REC','STOP','PLAY','CLEAR',):
             msg = ''
+
         if act == 'REC' and not rec:
             song.clear()
             rec_prev.clear()
             phold.clear()
             playing = False
-            for chan in plays.values():
-                chan.fadeout(100)
-            plays.clear()
-            prev.clear()
+            hush()
             rec = True
             rec_at = pygame.time.get_ticks()
         elif act == 'STOP':
+            stop_at = pygame.time.get_ticks()
             if rec:
                 now = pygame.time.get_ticks() - rec_at
                 for name in sorted(rec_prev):
@@ -225,41 +226,32 @@ while run:
             elif playing:
                 playing = False
                 phold.clear()
-                for chan in plays.values():
-                    chan.fadeout(150)
-                plays.clear()
-                prev.clear()
-            stop_at = pygame.time.get_ticks()
+                hush(150)
             
         elif act == 'PLAY' and song and not rec:
             playing = True
             play_at = pygame.time.get_ticks()
             step = 0
             phold.clear()
-            for chan in plays.values():
-                chan.fadeout(100)
-            plays.clear()
-            prev.clear()
+            hush()
         elif act == 'CLEAR':
             song.clear()
             rec_prev.clear()
             phold.clear()
             rec = False
             playing = False
-            for chan in plays.values():
-                chan.fadeout(100)
-            plays.clear()
-            prev.clear()
+            hush()
         elif act in ('PREV', 'NEXT'):
             files = sorted(folder.glob('*.json'))
             if not files:
                 msg = 'No saved songs D:'
             else:
                 if act == 'PREV':
-                    pick = (pick - 1)% len(files)
+                    pick = (pick - 1) % len(files)
                 else:
-                    pick = (pick+1)% len(files)
+                    pick = (pick + 1) % len(files)
                 msg = f'Selected {files[pick].stem}'
+                
         elif act == 'RENAME':
             if rec or playing:
                 msg = 'Stoop recording or playback first!'
@@ -270,8 +262,8 @@ while run:
                 typed = target.stem[:24]
                 held.clear()
                 edit = True
-                pygame.key.start_text_input()
                 msg='Enter your new song name!'
+                pygame.key.start_text_input()
         elif act == 'SAVE':
             if rec or playing:
                 msg = 'Stooop recordingg!'
@@ -280,7 +272,7 @@ while run:
             else:
                 try:
                     folder.mkdir(exist_ok=True)
-                    num=1
+                    num= 1
                     path= folder / f'song_{num:03}.json'
                     while path.exists():
                         num += 1
@@ -292,6 +284,7 @@ while run:
                     msg = f'{path.stem} is saved!! :D'
                 except OSError:
                     msg= 'Could not save the song :('
+
         if act == 'LOAD':
             if rec:
                 msg = 'Stooop recordingg!'
@@ -319,16 +312,13 @@ while run:
                         song = [tuple(item) for item in data]
                         playing = False
                         phold.clear()
-                        for chan in plays.values():
-                            chan.fadeout(100)
-                        plays.clear()
-                        prev.clear()
-                        msg='Songs have been loaded :DD'
+                        hush()
+                        msg=f'{files[pick].stem} has been loaded :DD'
                 except (OSError, json.JSONDecodeError):
                     msg = 'Could not load song :('
 
     mouse = None
-    if pygame.mouse.get_pressed()[0]:
+    if not edit and pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
         for name, rect in bkeys:
             if rect.collidepoint(pos):
@@ -341,9 +331,9 @@ while run:
                     break
 
     want=held.copy()
-
     if mouse is not None:
         want.add(mouse)
+
     if rec:
         now= pygame.time.get_ticks() - rec_at
         for name in sorted(want - rec_prev):
@@ -351,10 +341,11 @@ while run:
         for name in sorted(rec_prev - want):
             song.append((now, 'up', name))
         rec_prev = want.copy()
+
     if playing:
         now = pygame.time.get_ticks() - play_at
         while step < len(song) and song[step][0] <= now:
-            time, act, name = song[step]
+            tm, act, name = song[step]
             if act == 'down':
                 phold.add(name)
             if act == 'up':
@@ -378,15 +369,15 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
+
     for name, rect in btns.items():
-        hover = rect.collidepoint(pygame.mouse.get_pos())
-        if name in icons:
-            if name == 'PLAY':
-                col= (130, 220, 165) if playing or hover else white
-            elif name == 'STOP':
-                col = (255, 100, 1120) if rec or playing or hover else white
-            else:
-                col = (255, 110, 175) if hover else (180, 180, 185)
+        x, y = rect.center
+        if name == 'PLAY':
+            col= (130, 220, 165) if playing or hover else white
+        elif name == 'STOP':
+            col = (255, 100, 1120) if rec or playing or hover else white
+        else:
+            col = (255, 110, 175) if hover else (180, 180, 185)
             label = ifont.render(icons[name], True, col)
         else:
             if name == 'REC' and rec:
