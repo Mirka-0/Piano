@@ -9,7 +9,7 @@ pygame.init()
 pygame.mixer.set_num_channels(50)
 
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
-tabft = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 18)
+tabft = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 13)
 font = pygame.font.SysFont('Arial', 17)
 bfont = pygame.font.SysFont('Arial', 15)
 smfont = pygame.font.SysFont('Arial', 12)
@@ -102,15 +102,15 @@ edit = False
 typed = ''
 target = None
 btns = {
-    'PREV': pygame.Rect(40, 18, 28, 36),
-    'NEXT': pygame.Rect(82, 18, 28, 36),
-    'RENAME': pygame.Rect(125, 18, 110, 28),
-    'REC': pygame.Rect(560, 18, 78, 28),
-    'STOP': pygame.Rect(648, 15, 40, 34),
-    'PLAY': pygame.Rect(698, 15, 40, 34),
-    'CLEAR': pygame.Rect(750, 18, 78, 28),
-    'SAVE': pygame.Rect(838, 18, 78, 28),
-    'LOAD': pygame.Rect(926, 18, 78, 28)
+    'PREV': pygame.Rect(276, 149, 34, 32),
+    'NEXT': pygame.Rect(322, 149, 34, 32),
+    'RENAME': pygame.Rect(368, 149, 105, 32),
+    'REC': pygame.Rect(485, 149, 74, 32),
+    'STOP': pygame.Rect(571, 149, 42, 32),
+    'PLAY': pygame.Rect(625, 149, 42, 32),
+    'CLEAR': pygame.Rect(679, 149, 74, 32),
+    'SAVE': pygame.Rect(765, 149, 74, 32),
+    'LOAD': pygame.Rect(851, 149, 74, 32)
 }
 stop_at = -1000
 def hush(ms=100):
