@@ -179,6 +179,9 @@ while run:
                             except OSError:
                                 msg = 'Could not rename the song :(('
             continue
+        if tab != 'PIANO':
+            if evt.type in (pygame.KEYDOWN, pygame.KEYUP):
+                continue
 
         if evt.type == pygame.QUIT:
             run = False
