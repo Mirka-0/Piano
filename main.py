@@ -432,23 +432,25 @@ while run:
     label = font.render(f'VOL {round(vol* 100)}%', True, white)
     scr.blit(label, (bar.x - 115, 105))
 
-    if msg:
-        txt = msg
-        col = (210, 125, 45)
-    elif rec:
+    if rec:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
         txt = 'Playing your song!'
         col = (130, 220, 165)
+    elif msg:
+            txt = msg
+            col = (210, 125, 45)
     elif song: 
         txt = 'Song is readyy :D'
         col = (130, 190, 245)
     else:
         txt = 'Ready to play!'
-        col = (235, 235, 237)
+        col = white
+    
     label = font.render(txt, True, col)
-    scr.blit(label, label.get_rect(center=(wid //2, 114)))
+    pos = label.get_rect(center=(wid // 2, 114))
+    scr.blit(label, pos)
     if edit:
         field = pygame.Rect(wid // 2-210, 146, 420, 40)
         pygame.draw.rect(
