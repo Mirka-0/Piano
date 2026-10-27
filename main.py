@@ -226,6 +226,8 @@ while run:
                         if rec:
                             msg = 'Stooop reconding first!!'
                         elif tab != name:
+                            m_on = False
+                            beat = 0
                             tab = name
                             playing = False
                             pedal = False
