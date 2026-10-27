@@ -491,16 +491,12 @@ while run:
     elif playing:
         txt = 'Playing your song!'
         col = (130, 220, 165)
-    elif msg:
-        txt = msg
-        col = amber
-    elif rec:
-        txt = 'Recording'
-        col = (255, 100, 110)
-    
     elif files and pygame.time.get_ticks() - sel_at < 2000:
         txt = f'Song is {files[pick].stem}'
         col = (130, 190, 245)
+    elif msg:
+        txt = msg
+        col = amber
     elif song: 
         txt = 'Song is readyy :D'
         col = (130, 190, 245)
