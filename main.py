@@ -420,20 +420,17 @@ while run:
     label = font.render(txt, True, col)
     scr.blit(label, (key_x, 105))
     pygame.draw.circle(scr, col, (key_x-15, 114), 7) #((x,y), r)
-    
+
     bar= pygame.Rect(wid - 205, 110, 150, 14)
     fill = bar.copy()
     fill.w = int(bar.w * vol)
-    pygame.draw.rect(
-        scr, (85, 85, 95), bar, 
-        border_radius=7)
+    pygame.draw.rect(scr, (85, 85, 95), bar, border_radius=7)
     if fill.w > 0:
         pygame.draw.rect(
-            scr, (186, 0, 97), fill,
-            border_radius=7
+            scr, (186, 0, 97), fill, border_radius=7
         )
-    vtxt = font.render(f'VOL {round(vol*100)}%', True, white)
-    scr.blit(vtxt, (bar.x - 115, 105))
+    label = font.render(f'VOL {round(vol* 100)}%', True, white)
+    scr.blit(label, (bar.x - 115, 105))
 
     if msg:
         txt = msg
