@@ -24,9 +24,9 @@ clk = pygame.time.Clock()
 notes = ['C','D','E','F','G','A','B']
 octs = [4,5]
 key_w=68
-key_h=275
+key_h=260
 key_x=(wid - 14 *key_w) //2
-key_y = 210
+key_y = 250
 
 bg = (35,35,40)
 white = (250,250,248)
