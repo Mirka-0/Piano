@@ -416,6 +416,7 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
+    draw_tabls
 
     for name, rect in btns.items():
         x, y = rect.center
