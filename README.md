@@ -26,3 +26,4 @@ esc to cancel renaming
 maybe add a synthetizer 
 or a drum? :0 OMG OR THE THINGY WITH SOHNDS BEATBOx? my brain is not braining im so sorry
 shotout to tech with tim for his videos on how to use json with python and techknowfy and just youtube shotout to youtube dude
+the emojis i used are from https://www.compart.com/en/unicode and from https://emojidb.org/kaomoji-emojis

@@ -10,6 +10,7 @@ pygame.mixer.set_num_channels(50)
 
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
 font = pygame.font.SysFont('Arial', 17)
+ifont = pygame.font.SysFont('Arial', 30)
 bfont = pygame.font.SysFont('Arial', 15)
 smfont = pygame.font.SysFont('Arial', 12)
 wid = 1200
@@ -95,19 +96,26 @@ for i, name in enumerate(tabs):
     rect = pygame.Rect(x, 8, 135, 32)
     tabrs[name]= rect
 btns = {
-    'REC': pygame.Rect(560, 18, 78, 28),
-    'STOP': pygame.Rect(648, 18, 78, 28),
-    'PLAY': pygame.Rect(736, 18, 78, 28),
+    'REC': pygame.Rect(667, 18, 78, 28),
+    'STOP': pygame.Rect(667, 15, 42, 34),
+    'PLAY': pygame.Rect(754, 15, 42, 34),
     'CLEAR': pygame.Rect(824, 18, 78, 28),
     'SAVE': pygame.Rect(912, 18, 78, 28),
     'LOAD': pygame.Rect(1000, 18, 78, 28),
-    'PREV': pygame.Rect(912, 58, 78, 28),
-    'NEXT': pygame.Rect(1000, 58, 78, 28),
+    'PREV': pygame.Rect(936, 54, 28, 36),
+    'NEXT': pygame.Rect(1024, 54, 28, 36),
     'RENAME': pygame.Rect(1090, 58, 95, 28)
+}
+icons = {
+    'PREV': '‹',
+    'NEXT': '›',
+    'PLAY': '▶',
+    'STOP': '◼'
 }
 edit = False
 typed = ''
 target = None
+stop_at = -1000
 
 run = True
 while run:
@@ -204,6 +212,7 @@ while run:
                     chan.fadeout(150)
                 plays.clear()
                 prev.clear()
+            stop_at = pygame.time.get_ticks()
             
         elif act == 'PLAY' and song and not rec:
             playing = True
@@ -353,22 +362,10 @@ while run:
                 del plays[name]
     prev = want.copy()
     scr.fill(bg)
-
     for name, rect in btns.items():
-        active = (
-            (name == 'REC' and rec)
-            or (name == 'PLAY' and playing)
-        )
-        if name == 'REC' and active:
-            col = (200, 41, 9)
-        elif active:
-            col = (0, 145, 73)
-        else:
-            col = (70, 70, 80)
-        pygame.draw.rect(scr, col, rect, border_radius=4)
-        label = bfont.render(name, True, white)
-        pos = label.get_rect(center=rect.center)
-        scr.blit(label, pos)
+        hover = rect.collidepoint(pygame.mouse.get_pos())
+        
+
     if pedal:
         txt= 'PEDAL ON'
         col=(165, 47, 47)
