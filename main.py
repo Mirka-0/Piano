@@ -128,6 +128,15 @@ for i, name in enumerate(tabs):
     x=20 + i * 145
     rect = pygame.Rect(x, 18, 135, 38)
     tabrs[name]= rect
+bpm = 100
+m_on = False
+beat = 0
+m_at = 0
+m_bt = {
+    'MINUS': pygame.Rect(410, 390, 110, 42),
+    'GO': pygame.Rect(540, 390, 120, 42),
+    'PLUS': pygame.Rect(680, 390, 110, 42)
+}
 
 def dtab():
     for name, rect in tabrs.items():
@@ -229,6 +238,21 @@ while run:
                     for name, rect in btns.items():
                         if rect.collidepoint(evt.pos):
                             act = name
+                            break
+                elif tab == 'METRONOME':
+                    for name, rect in m_bt.items():
+                        if rect.collidepoint(evt.pos):
+                            if name == 'MINUS':
+                                bpm = max(40, bpm - 5)
+                            elif name == 'PLUS':
+                                bpm = min(240, bpm + 5)
+                            elif name == 'GO':
+                                m_on = not m_on
+                                if m_on:
+                                    beat = 1
+                                else:
+                                    beat = 0
+                            m_at = pygame.time.get_ticks() + 60000 / bpm
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
@@ -352,6 +376,10 @@ while run:
                 except (OSError, json.JSONDecodeError):
                     msg = 'Could not load song :('
     now = pygame.time.get_ticks()
+    if tab == 'METRONOME' and m_on:
+        while now >= m_at:
+            beat = beat% 4 + 1
+            m_at += 60000 / bpm
     if msg != oldmsg:
         msg_at = now
         oldmsg = msg
@@ -368,7 +396,34 @@ while run:
         pos = title.get_rect(center=(wid // 2, 210))
         scr.blit(title, pos)
         if tab == 'METRONOME':
-            txt = 'This is where the metronome will beeee >:D'
+            txt = font.render(f'{bpm} BPM', True, white)
+            pos = txt.get_rect(center=(wid // 2, 280))
+            scr.blit(txt, pos)
+            for i in range(4):
+                x = wid // 2-120 + i*80
+                y= 335
+                if m_on and beat== i +1:
+                    col =(0, 186, 177)
+                else:
+                    col = (70, 70, 80)
+                pygame.draw.circle(scr, col, (x, y), 25)
+                num = font.render(str(i+1), True, white)
+                pos = num.get_rect(center=(x,y))
+                scr.blit(num, pos)
+            for name, rect in m_bt.items():
+                col = (70, 70, 80)
+                if name == 'MINUS':
+                    txt = '-5 BPM'
+                elif name == 'PLUS':
+                    txt = '+5 BPM'
+                else:
+                    txt = 'PAUSE' if m_on else 'START'
+                    if m_on:
+                        col = (0, 145, 115)
+                pygame.draw.rect(scr, col, rect, border_radius=7)
+                label = bfont.render(txt, True, white)
+                pos = label.get_rect(center=rect.center)
+                scr.blit(label, pos)
         else:
             txt= 'The pitch detection will appear on Avengers: Doomsday :D'
         label = font.render(txt, True, gray)
