@@ -413,12 +413,14 @@ while run:
     if pedal:
         txt= 'PEDAL ON'
         col=(165, 47, 47)
+
     else:
         txt = 'PEDAL OFF'
-        col = (180,180,185)
+        col = gray
     label = font.render(txt, True, col)
     scr.blit(label, (key_x, 105))
     pygame.draw.circle(scr, col, (key_x-15, 114), 7) #((x,y), r)
+    
     bar= pygame.Rect(wid - 205, 110, 150, 14)
     fill = bar.copy()
     fill.w = int(bar.w * vol)
