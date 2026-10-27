@@ -447,10 +447,10 @@ while run:
     else:
         txt = 'Ready to play!'
         col = white
-    
     label = font.render(txt, True, col)
     pos = label.get_rect(center=(wid // 2, 114))
     scr.blit(label, pos)
+    
     if edit:
         field = pygame.Rect(wid // 2-210, 146, 420, 40)
         pygame.draw.rect(
@@ -463,10 +463,12 @@ while run:
         scr.blit(txt, (field.x+12, field.y+10))
         hint = smfont.render(
             'ENTER = Rename     ESC = Cancel',
-            True, (190, 190, 195)
+            True, gray
         )
         pos = hint.get_rect(center=(wid // 2, 196))
         scr.blit(hint, pos)
+
+        
     else:
         if files:
             name = files[pick].stem
