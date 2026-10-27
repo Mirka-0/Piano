@@ -113,7 +113,11 @@ btns = {
 }
 stop_at = -1000
 def hush(ms=100):
-    
+    for chan in plays.values():
+        chan.fadeout(ms)
+    plays.clear()
+    prev.clear()
+
 
 tabs= ['PIANO', 'METRONOME', 'TUNER']
 tab = 'PIANO'
@@ -124,16 +128,9 @@ for i, name in enumerate(tabs):
     rect = pygame.Rect(x, 8, 135, 32)
     tabrs[name]= rect
 
-icons = {
-    'PREV': '‹',
-    'NEXT': '›',
-    'PLAY': '▶',
-    'STOP': '◼'
-}
 edit = False
 typed = ''
 target = None
-
 
 run = True
 while run:
@@ -147,6 +144,7 @@ while run:
                     if len(typed) < 24:
                         if ch.isalnum() or ch in ' _-':
                             typed += ch
+
             elif evt.type == pygame.KEYDOWN:
                 if evt.key == pygame.K_BACKSPACE:
                     typed = typed[:-1]
@@ -154,6 +152,7 @@ while run:
                     edit = False
                     pygame.key.stop_text_input()
                     msg = 'Rename is cancelled'
+                    
                 elif evt.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
                     name = typed.strip()
                     if not name:
