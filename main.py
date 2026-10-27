@@ -72,7 +72,7 @@ for i, key in enumerate(right):
     code = pygame.key.key_code(key)
     bind[code]= f'{tones[i]}{octs[1]}'
 
-root = Path(__file__).resolve().parent / 'audio'
+root = Path(__file__).resolve().parent
 snd = {}
 for name, rect in wkeys + bkeys:
     file = name.replace('#','s')+ '.ogg'
@@ -102,8 +102,8 @@ typed = ''
 target = None
 btns = {
     'REC': pygame.Rect(560, 18, 78, 28),
-    'STOP': pygame.Rect(661, 15, 44, 34),
-    'PLAY': pygame.Rect(749, 15, 44, 34),
+    'STOP': pygame.Rect(650, 15, 44, 34),
+    'PLAY': pygame.Rect(702, 15, 44, 34),
     'CLEAR': pygame.Rect(824, 18, 78, 28),
     'SAVE': pygame.Rect(912, 18, 78, 28),
     'LOAD': pygame.Rect(1000, 18, 78, 28),
@@ -265,25 +265,32 @@ while run:
                 msg='Enter your new song name!'
                 pygame.key.start_text_input()
         elif act == 'SAVE':
-            if rec or playing:
-                msg = 'Stooop recordingg!'
-            elif not song:
-                msg = 'No song to save D:'
+            if playing:
+                msg = 'Stooop! playback first!!'
             else:
-                try:
-                    folder.mkdir(exist_ok=True)
-                    num= 1
-                    path= folder / f'song_{num:03}.json'
-                    while path.exists():
-                        num += 1
-                        path = folder / f'song_{num:03}.json'
-                    with path.open('w', encoding='utf-8') as f:
-                        json.dump(song, f, indent=2)
-                    files = sorted(folder.glob('*.json'))
-                    pick = files.index(path)
-                    msg = f'{path.stem} is saved!! :D'
-                except OSError:
-                    msg= 'Could not save the song :('
+                if rec: 
+                    now = pygame.time.get_ticks() - rec_at
+                    for name in sorted(rec_prev):
+                        song.append((now, 'up', name))
+                    rec_prev.clear()
+                    rec = False
+                if not song:
+                    msg = 'No song to save D:'
+                else:
+                    try:
+                        folder.mkdir(exist_ok=True)
+                        num= 1
+                        path= folder / f'song_{num:03}.json'
+                        while path.exists():
+                            num += 1
+                            path = folder / f'song_{num:03}.json'
+                        with path.open('w', encoding='utf-8') as f:
+                            json.dump(song, f, indent=2)
+                        files = sorted(folder.glob('*.json'))
+                        pick = files.index(path)
+                        msg = f'{path.stem} is saved!! :D'
+                    except OSError:
+                        msg= 'Could not save the song :('
 
         if act == 'LOAD':
             if rec:
@@ -378,7 +385,8 @@ while run:
                 (x-7, y+10),
                 (x+10, y)
             ]
-            pygame.draw.polygon(scr, gray, pts)
+            col = (130, 220, 165) if playing else gray
+            pygame.draw.polygon(scr, col, pts)
 
         elif name == 'STOP':
             if pygame.time.get_ticks() - stop_at < 450:
@@ -407,8 +415,8 @@ while run:
         else: 
             pygame.draw.rect(scr, (70,70,80), rect, border_radius=4)
             label = bfont.render(name, True, white)
-        pos = label.get_rect(center=rect.center)
-        scr.blit(label, pos)
+            pos = label.get_rect(center=rect.center)
+            scr.blit(label, pos)
         
     if pedal:
         txt= 'PEDAL ON'
@@ -432,15 +440,15 @@ while run:
     label = font.render(f'VOL {round(vol* 100)}%', True, white)
     scr.blit(label, (bar.x - 115, 105))
 
-    if rec:
+    if msg:
+        txt = msg
+        col = (210, 125, 45)
+    elif rec:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
         txt = 'Playing your song!'
         col = (130, 220, 165)
-    elif msg:
-            txt = msg
-            col = (210, 125, 45)
     elif song: 
         txt = 'Song is readyy :D'
         col = (130, 190, 245)
@@ -468,11 +476,6 @@ while run:
         pos = hint.get_rect(center=(wid // 2, 196))
         scr.blit(hint, pos)
 
-        
-    else:
-        if files:
-            name = files[pick].stem
-            txt = f'Library: {name}'
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
