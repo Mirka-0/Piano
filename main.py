@@ -274,10 +274,6 @@ while run:
                                 m_at = pygame.time.get_ticks()
                                 if not m_on:
                                     m_ch.stop()
-                                if m_on:
-                                    beat = 1
-                                else:
-                                    beat = 0
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
