@@ -135,7 +135,7 @@ def draw_tabls():
         else:
             col = (70, 70, 80)
         pygame.draw.rect(scr, col, rect, border_radius=7)
-        label = tfont.render(name, True, white)
+        label = bfont.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
 
@@ -349,6 +349,22 @@ while run:
                     msg = 'Could not load song :('
 
     mouse = None
+    if tab != 'PIANO':
+        scr.fill(bg)
+        draw_tabls()
+        title= tfont.render(tab, True, white)
+        pos = title.get_rect(center=(wid // 2, 210))
+        scr.blit(title, pos)
+        if tab == 'METRONOME':
+            txt = 'This is where the metronome will beeee >:D'
+        else:
+            txt= 'The pitch detection will appear on Avengers: Doomsday :D'
+        label = font.render(txt, True, gray)
+        pos = label.get_rect(center=(wid // 2, 280))
+        scr.blit(label, pos)
+        pygame.display.flip()
+        continue
+
     if not edit and pygame.mouse.get_pressed()[0]:
         pos = pygame.mouse.get_pos()
         for name, rect in bkeys:
