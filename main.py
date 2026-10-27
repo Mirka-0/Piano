@@ -140,6 +140,8 @@ def dtab():
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
 sel_at = -3000
+msg_at = 0
+oldmsg =''
 run = True
 while run:
     clk.tick(fps)
@@ -349,6 +351,14 @@ while run:
                         msg=f'{files[pick].stem} has been loaded :DD'
                 except (OSError, json.JSONDecodeError):
                     msg = 'Could not load song :('
+    now = pygame.time.get_ticks()
+    if msg != oldmsg:
+        msg_at = now
+        oldmsg = msg
+
+    if msg and now - msg_at > 2500:
+        msg = ''
+        oldmsg = ''
 
     mouse = None
     if tab != 'PIANO':
