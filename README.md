@@ -15,6 +15,8 @@ Audio distribution: Makefully-Studios from tonejs-instrument-piano-ogg@1.1.0
 I didn't make any type of modification to the downloaded audio samples
 ## Environment
 install
+source .venv/bin/activate
+python main.py
 
 *mirkala of the future don't foget to add a guide
 tab: start or stop recording

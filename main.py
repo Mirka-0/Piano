@@ -517,6 +517,14 @@ while run:
         )
         pos = hint.get_rect(center=(wid // 2, 196))
         scr.blit(hint, pos)
+    else:
+        if files:
+            txt = f'Song is {files[pick].stem}'
+        else: 
+            txt = 'No saved songs D:'
+        label = font.render(txt, True, white)
+        pos = label.get_rect(center=(wid // 2 , 165))
+        scr.blit(label, pos)
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
