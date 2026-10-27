@@ -266,8 +266,12 @@ while run:
                         if rect.collidepoint(evt.pos):
                             if name == 'MINUS':
                                 bpm = max(40, bpm - 5)
+                                if m_on:
+                                    m_at = pygame.time.get_ticks() + 60000 / bpm
                             elif name == 'PLUS':
                                 bpm = min(240, bpm + 5)
+                                if m_on:
+                                    m_at = pygame.time.get_ticks() + 60000 / bpm
                             elif name == 'GO':
                                 m_on = not m_on
                                 beat = 0
