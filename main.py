@@ -125,8 +125,19 @@ tabrs ={}
 
 for i, name in enumerate(tabs):
     x=20+i*145
-    rect = pygame.Rect(x, 8, 135, 32)
+    rect = pygame.Rect(x, 65, 135, 32)
     tabrs[name]= rect
+
+def draw_tabls():
+    for name, rect in tabrs.items():
+        if name == tab:
+            col = (0, 186, 177)
+        else:
+            col = (70, 70, 80)
+        pygame.draw.rect(scr, col, rect, border_radius=7)
+        label = tfont.render(name, True, white)
+        pos = label.get_rect(center=rect.center)
+        scr.blit(label, pos)
 
 run = True
 while run:
