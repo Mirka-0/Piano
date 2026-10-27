@@ -206,10 +206,24 @@ while run:
                 held.discard(bind[evt.key])
         elif evt.type == pygame.MOUSEBUTTONDOWN:
             if evt.button == 1:
-                for name, rect in btns.items():
+                for name, rect in tabrs.items():
                     if rect.collidepoint(evt.pos):
-                        act=name
+                        if rec:
+                            msg = 'Stooop reconding first!!'
+                        elif tab != name:
+                            tab = name
+                            playing = False
+                            pedal = False
+                            held.clear()
+                            phold.clear()
+                            hush()
+                            msg = ''
                         break
+                if tab == 'PIANO':
+                    for name, rect in btns.items():
+                        if rect.collidepoint(evt.pos):
+                            act = name
+                            break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
             msg = ''
