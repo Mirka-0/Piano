@@ -498,7 +498,7 @@ while run:
         txt = 'Recording'
         col = (255, 100, 110)
     
-    elif files and pygame.get_ticks() - sel_at < 2000:
+    elif files and pygame.time.get_ticks() - sel_at < 2000:
         txt = f'Song is {files[pick].stem}'
         col = (130, 190, 245)
     elif song: 
