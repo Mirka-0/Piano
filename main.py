@@ -388,7 +388,22 @@ while run:
             pygame.draw.rect(
                 scr, col, (x-9, y-9, 18, 18)
             )
-        else:
+        elif name in ('PREV', 'NEXT'):
+            if name == 'PREV':
+                pts = [
+                    (x+5, y-9),
+                    (x-4, y),
+                    (x+5, y+9)
+                ]
+            else:
+                pts = [
+                    (x-5, y-9),
+                    (x+4, y),
+                    (x-5, y+9)
+                ]
+
+            pygame.draw.lines(scr, gray, False, pts, 3)
+            
             if name == 'REC' and rec:
                 bgcol = (200, 41, 9)
                 col = white
