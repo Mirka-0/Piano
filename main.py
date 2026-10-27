@@ -164,7 +164,7 @@ def mkclk(hz):
         wave = (0.8*math.sin(2*math.pi*hz*t) + 0.2*math.sin(2*math.pi*hz*1.8*t))
         val = int(13000 * fade * wave)
         buf.extend((val, val))
-    return mixer.Sound(buffer==buf.tobytes())
+    return mixer.Sound(buffer=buf.tobytes())
 m_tick = mkclk(1000)
 m_acc = mkclk(1600)
 m_ch = mixer.Channel(0)
@@ -248,6 +248,7 @@ while run:
                             m_on = False
                             beat = 0
                             tab = name
+                            m_ch.stop()
                             playing = False
                             pedal = False
                             held.clear()
@@ -277,7 +278,6 @@ while run:
                                     beat = 1
                                 else:
                                     beat = 0
-                            m_at = pygame.time.get_ticks() + 60000 / bpm
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
@@ -402,9 +402,15 @@ while run:
                     msg = 'Could not load song :('
     now = pygame.time.get_ticks()
     if tab == 'METRONOME' and m_on:
-        while now >= m_at:
-            beat = beat% 4 + 1
+        if now >= m_at:
+            beat = beat % 4 + 1
+            if beat == 1:
+                m_ch.play(m_acc)
+            else:
+                m_ch.play(m_tick)
             m_at += 60000 / bpm
+            if m_at < now:
+                m_at = now + 60000 / bpm
     if msg != oldmsg:
         msg_at = now
         oldmsg = msg
@@ -451,9 +457,9 @@ while run:
                 scr.blit(label, pos)
         else:
             txt= 'The pitch detection will appear on Avengers: Doomsday :D'
-        label = font.render(txt, True, gray)
-        pos = label.get_rect(center=(wid // 2, 280))
-        scr.blit(label, pos)
+            label = font.render(txt, True, gray)
+            pos = label.get_rect(center=(wid // 2, 280))
+            scr.blit(label, pos)
         pygame.display.flip()
         continue
 
