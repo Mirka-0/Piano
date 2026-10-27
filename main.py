@@ -101,15 +101,15 @@ edit = False
 typed = ''
 target = None
 btns = {
+    'PREV': pygame.Rect(40, 18, 28, 36),
+    'NEXT': pygame.Rect(82, 18, 28, 36),
+    'RENAME': pygame.Rect(125, 18, 110, 28),
     'REC': pygame.Rect(560, 18, 78, 28),
-    'STOP': pygame.Rect(650, 15, 44, 34),
-    'PLAY': pygame.Rect(702, 15, 44, 34),
-    'CLEAR': pygame.Rect(824, 18, 78, 28),
-    'SAVE': pygame.Rect(912, 18, 78, 28),
-    'LOAD': pygame.Rect(1000, 18, 78, 28),
-    'PREV': pygame.Rect(936, 54, 28, 36),
-    'NEXT': pygame.Rect(1024, 54, 28, 36),
-    'RENAME': pygame.Rect(1090, 58, 95, 28)
+    'STOP': pygame.Rect(648, 15, 40, 34),
+    'PLAY': pygame.Rect(698, 15, 40, 34),
+    'CLEAR': pygame.Rect(750, 18, 78, 28),
+    'SAVE': pygame.Rect(838, 18, 78, 28),
+    'LOAD': pygame.Rect(926, 18, 78, 28)
 }
 stop_at = -1000
 def hush(ms=100):
