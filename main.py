@@ -10,24 +10,30 @@ pygame.mixer.set_num_channels(50)
 
 tfont = pygame.font.Font('extras/OpenDyslexic-Bold.otf', 40)
 font = pygame.font.SysFont('Arial', 17)
-ifont = pygame.font.SysFont('Arial', 30)
 bfont = pygame.font.SysFont('Arial', 15)
 smfont = pygame.font.SysFont('Arial', 12)
+
 wid = 1200
 hgt = 540
 scr = pygame.display.set_mode([wid, hgt])
 pygame.display.set_caption('PIANO')
-bg = (35,35,40)
+
 fps=60
 clk = pygame.time.Clock()
+
 notes = ['C','D','E','F','G','A','B']
 octs = [4,5]
 key_w=68
 key_h=275
 key_x=(wid - 14 *key_w) //2
 key_y = 210
+
+bg = (35,35,40)
 white = (250,250,248)
 edge = (46,46,46)
+gray = (180, 180, 185)
+amber = (221, 148, 22)
+
 blk_w=40
 blk_h=160
 black = (25, 25, 30)
@@ -51,12 +57,14 @@ for o, octv in enumerate(octs):
         rect = pygame.Rect(x, key_y, blk_w, blk_h)
         name = f'{sharp[i]}{octv}'
         bkeys.append((name, rect))
+
 tones = ['C','C#','D','D#','E','F',
          'F#','G','G#','A','A#','B']
 left= 'zsxdcvgbhnjm'
 right= 'r5t6yu8i9o0p'
 bind ={}
 held=set()
+
 for i, key in enumerate(left):
     code = pygame.key.key_code(key)
     bind[code]= f'{tones[i]}{octs[0]}'
@@ -64,11 +72,11 @@ for i, key in enumerate(right):
     code = pygame.key.key_code(key)
     bind[code]= f'{tones[i]}{octs[1]}'
 
-audio = Path(__file__).resolve().parent / 'audio'
+root = Path(__file__).resolve().parent / 'audio'
 snd = {}
 for name, rect in wkeys + bkeys:
     file = name.replace('#','s')+ '.ogg'
-    path = audio / file
+    path = root / 'audio' / file
     snd[name] = mixer.Sound(str(path))
 
 plays = {}
@@ -76,7 +84,7 @@ pedal = False
 prev = set()
 vol = 0.7
 song =[]
-folder = Path(__file__).resolve().parent / 'songs'
+folder = root / 'songs'
 files = sorted(folder.glob('*.json')) #ily glob
 pick = len(files)-1 if files else 0
 msg = ''
@@ -88,17 +96,14 @@ playing = False
 play_at =0
 step =0
 phold = set()
-tabs= ['PIANO', 'METRONOME', 'TUNER']
-tab = 'PIANO'
-tabrs ={}
-for i, name in enumerate(tabs):
-    x=20+i*145
-    rect = pygame.Rect(x, 8, 135, 32)
-    tabrs[name]= rect
+
+edit = False
+typed = ''
+target = None
 btns = {
-    'REC': pygame.Rect(667, 18, 78, 28),
-    'STOP': pygame.Rect(667, 15, 42, 34),
-    'PLAY': pygame.Rect(754, 15, 42, 34),
+    'REC': pygame.Rect(560, 18, 78, 28),
+    'STOP': pygame.Rect(661, 15, 44, 34),
+    'PLAY': pygame.Rect(749, 15, 44, 34),
     'CLEAR': pygame.Rect(824, 18, 78, 28),
     'SAVE': pygame.Rect(912, 18, 78, 28),
     'LOAD': pygame.Rect(1000, 18, 78, 28),
@@ -106,6 +111,19 @@ btns = {
     'NEXT': pygame.Rect(1024, 54, 28, 36),
     'RENAME': pygame.Rect(1090, 58, 95, 28)
 }
+stop_at = -1000
+def hush(ms=100):
+    
+
+tabs= ['PIANO', 'METRONOME', 'TUNER']
+tab = 'PIANO'
+tabrs ={}
+
+for i, name in enumerate(tabs):
+    x=20+i*145
+    rect = pygame.Rect(x, 8, 135, 32)
+    tabrs[name]= rect
+
 icons = {
     'PREV': '‹',
     'NEXT': '›',
@@ -115,7 +133,7 @@ icons = {
 edit = False
 typed = ''
 target = None
-stop_at = -1000
+
 
 run = True
 while run:
@@ -242,7 +260,6 @@ while run:
                     pick = (pick - 1)% len(files)
                 else:
                     pick = (pick+1)% len(files)
-                act = 'LOAD'
                 msg = f'Selected {files[pick].stem}'
         elif act == 'RENAME':
             if rec or playing:
@@ -364,8 +381,29 @@ while run:
     scr.fill(bg)
     for name, rect in btns.items():
         hover = rect.collidepoint(pygame.mouse.get_pos())
+        if name in icons:
+            if name == 'PLAY':
+                col= (130, 220, 165) if playing or hover else white
+            elif name == 'STOP':
+                col = (255, 100, 1120) if rec or playing or hover else white
+            else:
+                col = (255, 110, 175) if hover else (180, 180, 185)
+            label = ifont.render(icons[name], True, col)
+        else:
+            if name == 'REC' and rec:
+                bgcol = (200, 41, 9)
+                col = white
+            elif hover:
+                bgcol = (90, 90, 100)
+                col = (255, 180, 210)
+            else: 
+                bgcol = (70, 70, 80)
+                col = white
+            pygame.draw.rect(scr, bgcol, rect, border_radius=4)
+            label = bfont.render(name, True, col)
+        pos = label.get_rect(center=rect.center)
+        scr.blit(label, pos)
         
-
     if pedal:
         txt= 'PEDAL ON'
         col=(165, 47, 47)
@@ -426,11 +464,6 @@ while run:
         if files:
             name = files[pick].stem
             txt = f'Library: {name}'
-        else:
-            txt = 'Library: no saved songs D:' #would it be weird if it said library says? idk man D:, should seriously consider to use kaomojis bitmojis? isk the super expressive ones >:D
-        label = font.render(txt, True, white)
-        pos = label.get_rect(center=(wid //2, 165))
-        scr.blit(label, pos)
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
