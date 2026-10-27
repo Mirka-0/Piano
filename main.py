@@ -421,6 +421,8 @@ while run:
     dtab()
 
     for name, rect in btns.items():
+        if edit:
+            continue
         x, y = rect.center
         if name == 'PLAY':
             pts = [
@@ -483,15 +485,22 @@ while run:
     label = font.render(f'VOL {round(vol* 100)}%', True, white)
     scr.blit(label, (bar.x - 115, 105))
 
-    if msg:
-        txt = msg
-        col = (210, 125, 45)
-    elif rec:
+    if rec:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
         txt = 'Playing your song!'
         col = (130, 220, 165)
+    elif msg:
+        txt = msg
+        col = amber
+    elif rec:
+        txt = 'Recording'
+        col = (255, 100, 110)
+    
+    elif files and pygame.get_ticks() - sel_at < 2000:
+        txt = f'Song is {files[pick].stem}'
+        col = (130, 190, 245)
     elif song: 
         txt = 'Song is readyy :D'
         col = (130, 190, 245)
@@ -518,14 +527,6 @@ while run:
         )
         pos = hint.get_rect(center=(wid // 2, 196))
         scr.blit(hint, pos)
-    else:
-        if files:
-            txt = f'Song is {files[pick].stem}'
-        else: 
-            txt = 'No saved songs D:'
-        label = font.render(txt, True, white)
-        pos = label.get_rect(center=(wid // 2 , 165))
-        scr.blit(label, pos)
 
     for name, rect in wkeys: 
         color = (255, 250, 135) if name in want else white
