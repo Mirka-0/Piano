@@ -102,15 +102,15 @@ edit = False
 typed = ''
 target = None
 btns = {
-    'PREV': pygame.Rect(276, 149, 34, 32),
-    'NEXT': pygame.Rect(322, 149, 34, 32),
-    'RENAME': pygame.Rect(368, 149, 105, 32),
-    'REC': pygame.Rect(485, 149, 74, 32),
-    'STOP': pygame.Rect(571, 149, 42, 32),
-    'PLAY': pygame.Rect(625, 149, 42, 32),
-    'CLEAR': pygame.Rect(679, 149, 74, 32),
-    'SAVE': pygame.Rect(765, 149, 74, 32),
-    'LOAD': pygame.Rect(851, 149, 74, 32)
+    'PREV': pygame.Rect(276, 152, 34, 32),
+    'NEXT': pygame.Rect(322, 152, 34, 32),
+    'RENAME': pygame.Rect(368, 152, 105, 32),
+    'REC': pygame.Rect(485, 152, 74, 32),
+    'STOP': pygame.Rect(571, 152, 42, 32),
+    'PLAY': pygame.Rect(625, 152, 42, 32),
+    'CLEAR': pygame.Rect(679, 152, 74, 32),
+    'SAVE': pygame.Rect(765, 152, 74, 32),
+    'LOAD': pygame.Rect(851, 152, 74, 32)
 }
 stop_at = -1000
 def hush(ms=100):
@@ -139,7 +139,7 @@ def dtab():
         label = tabft.render(name, True, white)
         pos = label.get_rect(center=rect.center)
         scr.blit(label, pos)
-
+sel_at = -3000
 run = True
 while run:
     clk.tick(fps)
@@ -275,7 +275,8 @@ while run:
                     pick = (pick - 1) % len(files)
                 else:
                     pick = (pick + 1) % len(files)
-                msg = f'Selected {files[pick].stem}'
+                msg = ''
+                sel_at = pygame.time.get_ticks()
                 
         elif act == 'RENAME':
             if rec or playing:
