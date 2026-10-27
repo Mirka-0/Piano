@@ -269,6 +269,10 @@ while run:
                                 bpm = min(240, bpm + 5)
                             elif name == 'GO':
                                 m_on = not m_on
+                                beat = 0
+                                m_at = pygame.time.get_ticks()
+                                if not m_on:
+                                    m_ch.stop()
                                 if m_on:
                                     beat = 1
                                 else:
