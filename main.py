@@ -379,12 +379,15 @@ while run:
                 (x+10, y)
             ]
             pygame.draw.polygon(scr, gray, pts)
-            
+
         elif name == 'STOP':
-            col = (255, 100, 1120) if rec or playing or hover else white
-        else:
-            col = (255, 110, 175) if hover else (180, 180, 185)
-            label = ifont.render(icons[name], True, col)
+            if pygame.time.get_ticks() - stop_at < 450:
+                col = amber
+            else:
+                col = gray
+            pygame.draw.rect(
+                scr, col, (x-9, y-9, 18, 18)
+            )
         else:
             if name == 'REC' and rec:
                 bgcol = (200, 41, 9)
