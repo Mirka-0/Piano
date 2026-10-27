@@ -128,10 +128,6 @@ for i, name in enumerate(tabs):
     rect = pygame.Rect(x, 8, 135, 32)
     tabrs[name]= rect
 
-edit = False
-typed = ''
-target = None
-
 run = True
 while run:
     clk.tick(fps)
