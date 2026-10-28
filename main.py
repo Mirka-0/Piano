@@ -170,6 +170,32 @@ m_acc = mixer.Sound(str(root / 'audio' / 'accent.wav'))
 m_ch = mixer.Channel(0)
 m_ch.set_volume(0.65)
 
+def tname(bpm):
+    if bpm < 24:
+        return 'Larghissimo'
+    if bpm < 40:
+        return 'Grave'
+    if bpm < 60:
+        return 'Largo'
+    if bpm < 66:
+        return 'Larghetto'
+    if bpm < 76:
+        return 'Adagio'
+    if bpm < 108:
+            return 'Andante'
+    if bpm < 120:
+            return 'Moderato'
+    if bpm < 124:
+            return 'Allegretto'
+    if bpm < 156:
+            return 'Allegro'
+    if bpm < 176:
+            return 'Vivace'
+    if bpm < 200:
+            return 'Presto'
+    return 'Prestissimo'
+    
+
 run = True
 while run:
     clk.tick(fps)
