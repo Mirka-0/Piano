@@ -183,8 +183,8 @@ m_bt.update({
     'BAR':pygame.Rect(410, 440, 180, 42),
     'ACC':pygame.Rect(610, 440, 180, 42)
 })
-m_bt['UNIT'] = pygame.Rect(265, 440, 120, 56)
-m_bt['SUB'] = pygame.Rect(835, 440, 90, 56)
+m_bt['SUB'] = pygame.Rect(265, 440, 120, 56)
+m_bt['UNIT'] = pygame.Rect(835, 440, 90, 56)
 def dtab():
     for name, rect in tabrs.items():
         if name == tab:
@@ -559,7 +559,7 @@ while run:
                 elif name == 'SUB':
                     txt = 'RHYTHM' if sidx else 'NO RHYTHM D:'
                 pygame.draw.rect(scr, col, rect, border_radius=7)
-                if name in 'SUB':
+                if name == 'SUB':
                     label = bfont.render('RHYTHM', True, white)
                     pos=label.get_rect(midleft=(rect.x + 10, rect.centery))
                     scr.blit(label, pos)
@@ -569,9 +569,10 @@ while run:
                 elif name == 'UNIT':
                     img = uimg[units[unit]]
                     if img is not None:
-                        scr.blit(label, pos)
+                        pos = img.get_rect(center=rect.center)
+                        scr.blit(img, pos)
                     else:
-                        label = bfont.render('kaomojiii', True, white)
+                        label = bfont.render('D:', True, white)
                         pos = label.get_rect(center=rect.center)
                         scr.blit(label, pos)
                 else:
