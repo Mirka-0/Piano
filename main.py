@@ -559,6 +559,19 @@ while run:
                 num = font.render(str(i+1), True, white)
                 pos = num.get_rect(center=(x,y))
                 scr.blit(num, pos)
+            rate = (bpm - bmin) / (bmax-bmin)
+            pygame.draw.rect(scr, (75, 75, 85), bbar, border_radius=7)
+            fill = bbar.copy()
+            fill.w = round(bbar.w + rate)
+            if fill.w > 0:
+                pygame.draw.rect(scr, (118, 40, 214), fill, border_radius=7)
+            hx= round(bbar.x + bbar.w*rate)
+            hand= pygame.Rect(hx -13, bbar.centery - 14, 26, 28)
+            pygame.draw.rect(scr, (188, 142, 243), hand, border_radius=10)
+            lo = smfont.render(str(bmin), True, gray)
+            hi = smfont.render(str(bmax), True, gray)
+            scr.blit(lo, lo.get_rect(midright=(bar.x - 12, bbar.centery)))
+            scr.blit( hi, hi.get_rect(midleft=(bbar.right + 12, bbar.centery)))
             for name, rect in m_bt.items():
                 col = (70, 70, 80)
                 if name == 'MINUS':
