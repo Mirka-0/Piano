@@ -145,6 +145,7 @@ m_bt.update({
     'BAR':pygame.Rect(410, 450, 180, 38),
     'ACC':pygame.Rect(610, 450, 180, 38)
 })
+m_bt['UNIT'] = pygame.Rect(805, 450, 170, 38)
 
 def dtab():
     for name, rect in tabrs.items():
@@ -282,6 +283,8 @@ while run:
                                     m_at = pygame.time.get_ticks()
                             elif name == 'ACC':
                                 accent = not accent
+                            elif name == 'UNIT':
+                                unit = (unit+1) % len(units)
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
@@ -436,7 +439,7 @@ while run:
         pos = title.get_rect(center=(wid // 2, 210))
         scr.blit(title, pos)
         if tab == 'METRONOME':
-            txt = font.render(f'{bpm} BPM', True, white)
+            txt = font.render(f'{units[unit]} = {bpm} BPM', True, white)
             pos = txt.get_rect(center=(wid // 2, 280))
             scr.blit(txt, pos)
             gap = 70
@@ -468,6 +471,8 @@ while run:
                     txt = 'ACCENT IS ON' if accent else 'ACCENT OFF'
                     if accent:
                         col = (0, 38, 169)
+                elif name == 'UNIT':
+                    txt = f'BEAT: {units[unit]}'
                 pygame.draw.rect(scr, col, rect, border_radius=7)
                 label = bfont.render(txt, True, white)
                 pos = label.get_rect(center=rect.center)
