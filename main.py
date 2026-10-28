@@ -131,6 +131,11 @@ for i, name in enumerate(tabs):
 bpm = 100
 m_on = False
 beat = 0
+bmin = 40
+bmax = 240
+bdrag = False
+bbar = pygame.Rect( wid // 2 - 220, 350, 440, 14)
+
 m_at = 0
 tpb = 4
 accent = True
