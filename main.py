@@ -131,10 +131,10 @@ for i, name in enumerate(tabs):
 bpm = 100
 m_on = False
 beat = 0
-bmin = 40
-bmax = 240
+bmin = 15
+bmax = 400
 bdrag = False
-bbar = pygame.Rect( wid // 2 - 220, 350, 440, 14)
+bbar = pygame.Rect( wid // 2 - 220, 366, 440, 14)
 
 m_at = 0
 tpb = 4
@@ -181,10 +181,10 @@ def getimg(file):
 uimg = {name: getimg(file) for name, file in ufiles.items()}
 rimg = [getimg(file) for file in rfiles]
 m_bt = {
-    'GO': pygame.Rect(525, 293, 150, 42),
-    'SUB': pygame.Rect(265, 456, 120, 56),
-    'BAR': pygame.Rect(410, 463, 180, 42),
-    'ACC': pygame.Rect(610, 463, 180, 42),
+    'GO': pygame.Rect(525, 404, 150, 42),
+    'SUB': pygame.Rect(265, 466, 120, 56),
+    'BAR': pygame.Rect(410, 473, 180, 42),
+    'ACC': pygame.Rect(610, 473, 180, 42),
     'UNIT': pygame.Rect(835, 456, 90, 56)
 }
 def dtab():
@@ -550,27 +550,27 @@ while run:
             start = wid // 2 - (tpb - 1) * gap // 2
             for i in range(tpb):
                 x = start + i * gap
-                y= 295
+                y= 280
                 if m_on and beat== i +1:
                     col =(255, 214, 0)
                 else:
                     col = (70, 70, 80)
-                pygame.draw.circle(scr, col, (x, y), 25)
+                pygame.draw.circle(scr, col, (x, y), 27)
                 num = font.render(str(i+1), True, white)
                 pos = num.get_rect(center=(x,y))
                 scr.blit(num, pos)
             rate = (bpm - bmin) / (bmax-bmin)
             pygame.draw.rect(scr, (75, 75, 85), bbar, border_radius=7)
             fill = bbar.copy()
-            fill.w = round(bbar.w + rate)
+            fill.w = round(bbar.w * rate)
             if fill.w > 0:
                 pygame.draw.rect(scr, (54, 0, 158), fill, border_radius=7)
             hx= round(bbar.x + bbar.w*rate)
             hand= pygame.Rect(hx -13, bbar.centery - 14, 26, 28)
-            pygame.draw.rect(scr, (188, 142, 243), hand, border_radius=10)
+            pygame.draw.rect(scr, (197, 243, 142), hand, border_radius=10)
             lo = smfont.render(str(bmin), True, gray)
             hi = smfont.render(str(bmax), True, gray)
-            scr.blit(lo, lo.get_rect(midright=(bar.x - 12, bbar.centery)))
+            scr.blit(lo, lo.get_rect(midright=(bbar.x - 12, bbar.centery)))
             scr.blit( hi, hi.get_rect(midleft=(bbar.right + 12, bbar.centery)))
             for name, rect in m_bt.items():
                 col = (70, 70, 80)
