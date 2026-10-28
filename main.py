@@ -491,8 +491,9 @@ while run:
             txt = tfont.render(str(bpm), True, white)
             scr.blit(txt, txt.get_rect(center=(wid // 2, 255)))
             txt = font.render(tname(bpm), True, gray)
-            pos = txt.get_rect(center=(wid // 2, 280))
-            scr.blit(txt, pos)
+            scr.blit(txt, txt.get_rect(center=(wid//2, 290)))
+            y= 165 if tab == 'METRONOME' else 210
+            pos = title.get_rect(center=(wid // 2, y))
             gap = 70
             start = wid // 2 - (tpb - 1) * gap // 2
             for i in range(tpb):
