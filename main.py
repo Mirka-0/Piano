@@ -488,6 +488,8 @@ while run:
         if tab == 'METRONOME':
             txt = bfont.render(f'{units[unit]} =', True, gray)
             scr.blit(txt, txt.get_rect(center=(wid//2, 215)))
+            txt = tfont.render(str(bpm), True, white)
+            scr.blit(txt, txt.get_rect(center=(wid // 2, 255)))
             txt = font.render(f'{units[unit]} = {bpm} BPM', True, white)
             pos = txt.get_rect(center=(wid // 2, 280))
             scr.blit(txt, pos)
