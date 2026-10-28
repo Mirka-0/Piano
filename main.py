@@ -432,8 +432,10 @@ while run:
             txt = font.render(f'{bpm} BPM', True, white)
             pos = txt.get_rect(center=(wid // 2, 280))
             scr.blit(txt, pos)
-            for i in range(4):
-                x = wid // 2-120 + i*80
+            gap = 70
+            start = wid // 2 - (tpb - 1) * gap // 2
+            for i in range(tpb):
+                x = start+i * gap
                 y= 335
                 if m_on and beat== i +1:
                     col =(0, 186, 177)
@@ -449,10 +451,16 @@ while run:
                     txt = '-5 BPM'
                 elif name == 'PLUS':
                     txt = '+5 BPM'
-                else:
+                elif:
                     txt = 'PAUSE' if m_on else 'START'
                     if m_on:
-                        col = (0, 145, 115)
+                        col = (255, 222, 48)
+                elif name == 'BAR':
+                    txt = f'{tpb} BEATS/BAR'
+                elif name == 'ACC':
+                    txt = 'ACCENT IS ON' if accent else 'ACCENT OFF'
+                    if accent:
+                        col = (255, 222, 48)
                 pygame.draw.rect(scr, col, rect, border_radius=7)
                 label = bfont.render(txt, True, white)
                 pos = label.get_rect(center=rect.center)
