@@ -168,7 +168,7 @@ def getimg(file):
     w= max(1, round(w*scale))
     h= max(1,round(h*scale))
     img = pygame.transform.smoothscale(img, (w, h))
-    canva = pygame.Surface((size, size), pygame.SRCALPHA)
+    canvas = pygame.Surface((size, size), pygame.SRCALPHA)
     pos = img.get_rect(center=(size//2, size // 2))
     canvas.blit(img, pos)
     return canvas
@@ -204,9 +204,6 @@ m_acc = mixer.Sound(str(root / 'audio' / 'accent.wav'))
 m_ch = mixer.Channel(0)
 m_ch.set_volume(0.65)
 
-def icon(name, size= 56):
-    path = root / 'extras' / f'{name}.png'
-    img
 def tname(bpm):
     if bpm < 24:
         return 'Larghissimo'
@@ -572,7 +569,7 @@ while run:
                 else:
                     label = bfont.render(txt, True, white)
                     pos = label.get_rect(center=rect.center)
-                scr.blit(label, pos)
+                    scr.blit(label, pos)
         else:
             txt= 'The pitch detection will appear on Avengers: Doomsday :D'
             label = font.render(txt, True, gray)
