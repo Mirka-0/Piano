@@ -480,7 +480,7 @@ while run:
             for i in range(count):
                 x=wid//2+int((i-(count-1)/2)*28)
                 active = m_on and i == (sub-1) % count
-                col = (218, 50, 34)) if active else gray
+                col = (218, 50, 34) if active else gray
             pygame.draw.circle(scr, col, (x, 375), 5)
             for name, rect in m_bt.items():
                 col = (70, 70, 80)
