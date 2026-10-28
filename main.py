@@ -140,7 +140,7 @@ m_bt = {
     'PLUS': pygame.Rect(680, 390, 110, 42)
 }
 m_bt.update({
-    'BAR':pygame.Rect(410, 450, 180, 38)
+    'BAR':pygame.Rect(410, 450, 180, 38),
     'ACC':pygame.Rect(610, 450, 180, 38)
 })
 
@@ -274,7 +274,7 @@ while run:
                             elif name == 'BAR':
                                 vals = (2, 3, 4, 6)
                                 idx= vals.index(tpb)
-                                tpb= vals((idx+1)% len(vals))
+                                tpb= vals[(idx+1)% len(vals)]
                                 beat = 0
                                 if m_on:
                                     m_at = pygame.time.get_ticks()
@@ -451,7 +451,7 @@ while run:
                     txt = '-5 BPM'
                 elif name == 'PLUS':
                     txt = '+5 BPM'
-                elif:
+                elif name == 'GO':
                     txt = 'PAUSE' if m_on else 'START'
                     if m_on:
                         col = (255, 222, 48)
