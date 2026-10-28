@@ -181,16 +181,12 @@ def getimg(file):
 uimg = {name: getimg(file) for name, file in ufiles.items()}
 rimg = [getimg(file) for file in rfiles]
 m_bt = {
-    'MINUS': pygame.Rect(410, 375, 110, 42),
-    'GO': pygame.Rect(540, 375, 120, 42),
-    'PLUS': pygame.Rect(680, 375, 110, 42)
+    'GO': pygame.Rect(525, 293, 150, 42),
+    'SUB': pygame.Rect(265, 456, 120, 56),
+    'BAR': pygame.Rect(410, 463, 180, 42),
+    'ACC': pygame.Rect(610, 463, 180, 42),
+    'UNIT': pygame.Rect(835, 456, 90, 56)
 }
-m_bt.update({
-    'BAR':pygame.Rect(410, 440, 180, 42),
-    'ACC':pygame.Rect(610, 440, 180, 42)
-})
-m_bt['SUB'] = pygame.Rect(265, 440, 120, 56)
-m_bt['UNIT'] = pygame.Rect(835, 440, 90, 56)
 def dtab():
     for name, rect in tabrs.items():
         if name == tab:
@@ -328,6 +324,8 @@ while run:
                             act = name
                             break
                 elif tab == 'METRONOME':
+                    if bbar.inflate(28, 28).collidepoint(evt.pos):
+                        bdrag = True
                     for name, rect in m_bt.items():
                         col = (70, 70, 80)
                         if rect.collidepoint(evt.pos):
@@ -369,7 +367,9 @@ while run:
                                 if m_on:
                                     m_at = pygame.time.get_ticks()
                             break
-
+        elif evt.type == pygame.MOUSEBUTTONUP:
+            if evt.button == 1:
+                bdrag = False
         if act in ('REC','STOP','PLAY','CLEAR',):
             msg = ''
 
@@ -495,6 +495,17 @@ while run:
                         msg=f'{files[pick].stem} has been loaded :DD'
                 except (OSError, json.JSONDecodeError):
                     msg = 'Could not load song :('
+    if bdrag and tab == 'METRONOME':
+        mx = pygame.mouse.get_pos()[0]
+        rate = (mx-bbar.x)/ bbar.w
+        rate = max(0, min(1, rate))
+        new = round(bmin + rate *(bmax-bmin))
+        if new != bpm:
+            bpm =new
+            if m_on:
+                count = subvals[sidx]
+                gap = 60000 * uvals[unit] / (bpm*count)
+                m_at = pygame.time.get_ticks() + gap
     now = pygame.time.get_ticks()
     if tab == 'METRONOME' and m_on:
         if now >= m_at:
