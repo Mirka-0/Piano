@@ -132,6 +132,8 @@ bpm = 100
 m_on = False
 beat = 0
 m_at = 0
+tpb = 4
+accent = True
 m_bt = {
     'MINUS': pygame.Rect(410, 390, 110, 42),
     'GO': pygame.Rect(540, 390, 120, 42),
