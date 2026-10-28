@@ -438,7 +438,7 @@ while run:
                 x = start+i * gap
                 y= 335
                 if m_on and beat== i +1:
-                    col =(0, 186, 177)
+                    col =(255, 214, 0)
                 else:
                     col = (70, 70, 80)
                 pygame.draw.circle(scr, col, (x, y), 25)
@@ -454,13 +454,13 @@ while run:
                 elif name == 'GO':
                     txt = 'PAUSE' if m_on else 'START'
                     if m_on:
-                        col = (255, 222, 48)
+                        col = (186, 0, 97)
                 elif name == 'BAR':
                     txt = f'{tpb} BEATS/BAR'
                 elif name == 'ACC':
                     txt = 'ACCENT IS ON' if accent else 'ACCENT OFF'
                     if accent:
-                        col = (255, 222, 48)
+                        col = (0, 38, 169)
                 pygame.draw.rect(scr, col, rect, border_radius=7)
                 label = bfont.render(txt, True, white)
                 pos = label.get_rect(center=rect.center)
