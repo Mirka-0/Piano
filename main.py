@@ -136,6 +136,10 @@ tpb = 4
 accent = True
 units = ['WHOLE','HALF','QUARTER','8TH', '16TH']
 unit = 2
+subvals = (1, 2, 3, 4)
+subtxt = ('OFF', '8THS', 'TRIPLETS', '16THS')
+sidx =0
+sub =0
 m_bt = {
     'MINUS': pygame.Rect(410, 390, 110, 42),
     'GO': pygame.Rect(540, 390, 120, 42),
@@ -146,7 +150,7 @@ m_bt.update({
     'ACC':pygame.Rect(610, 450, 180, 38)
 })
 m_bt['UNIT'] = pygame.Rect(805, 450, 170, 38)
-
+m_bt['SUB'] = pygame.Rect(225, 450, 170, 38)
 def dtab():
     for name, rect in tabrs.items():
         if name == tab:
@@ -271,6 +275,7 @@ while run:
                             elif name == 'GO':
                                 m_on = not m_on
                                 beat = 0
+                                sub = 0
                                 m_at = pygame.time.get_ticks()
                                 if not m_on:
                                     m_ch.stop()
@@ -279,12 +284,19 @@ while run:
                                 idx= vals.index(tpb)
                                 tpb= vals[(idx+1)% len(vals)]
                                 beat = 0
+                                sub = 0
                                 if m_on:
                                     m_at = pygame.time.get_ticks()
                             elif name == 'ACC':
                                 accent = not accent
                             elif name == 'UNIT':
                                 unit = (unit+1) % len(units)
+                            elif name == 'SUB':
+                                sidx = (sidx+1) % len(subvals)
+                                sub = 0
+                                beat = 0
+                                if m_on:
+                                    m_at = pygame.time.get_ticks()
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
@@ -415,14 +427,23 @@ while run:
     now = pygame.time.get_ticks()
     if tab == 'METRONOME' and m_on:
         if now >= m_at:
-            beat = beat % tpb + 1
-            if beat == 1 and accent:
-                m_ch.play(m_acc)
+            count = subvals[sidx]
+            if sub == 0:
+                beat = beat%tpb+1
+                if beat == 1 and accent:
+                    m_ch.play(m_acc)
+                    m_ch.set_volume(0.8)
+                else:
+                    m_ch.play(m_tick)
+                    m_ch.set_volume(0.65)
             else:
                 m_ch.play(m_tick)
-            m_at += 60000 / bpm
+                m_ch.set_volume(0.25)
+            sub =(sub+1)% count
+            gap = 60000 / (bpm*count)
+            m_at += gap
             if m_at < now:
-                m_at = now + 60000 / bpm
+                m_at = now + gap
     if msg != oldmsg:
         msg_at = now
         oldmsg = msg
