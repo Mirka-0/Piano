@@ -34,6 +34,8 @@ white = (250,250,248)
 edge = (46,46,46)
 gray = (180, 180, 185)
 amber = (221, 148, 22)
+red = (214, 30, 30)
+green = (130, 220, 165)
 
 blk_w=40
 blk_h=160
@@ -684,7 +686,7 @@ while run:
                 (x-7, y+10),
                 (x+10, y)
             ]
-            col = (164, 229, 76) if playing else gray
+            col = green if playing else gray
             pygame.draw.polygon(scr, col, pts)
 
         elif name == 'STOP':
@@ -711,8 +713,9 @@ while run:
 
             pygame.draw.lines(scr, gray, False, pts, 3)
 
-        else: 
-            pygame.draw.rect(scr, (70,70,80), rect, border_radius=4)
+        else:
+            col = red if name == 'REC' and rec else (70,70,80)
+            pygame.draw.rect(scr, col, rect, border_radius=4)
             label = bfont.render(name, True, white)
             pos = label.get_rect(center=rect.center)
             scr.blit(label, pos)
@@ -744,10 +747,10 @@ while run:
         col = amber
     elif rec:
         txt = 'Recording'
-        col = (85, 85, 95)
+        col = red
     elif playing:
         txt = 'Playing your song!'
-        col = (165, 47, 47)
+        col = green
     elif files and pygame.time.get_ticks() - sel_at < 3000:
         txt = f'Song is {files[pick].stem}'
         col = (130, 190, 245)
@@ -767,7 +770,7 @@ while run:
             scr, (65, 65, 75), field, border_radius=7
         )
         pygame.draw.rect(
-            scr, (165, 47, 47), field, 2, border_radius=7
+            scr, gray, field, 2, border_radius=7
         )
         txt = font.render(typed + '|', True, white)
         scr.blit(txt, (field.x+12, field.y+10))
@@ -779,7 +782,7 @@ while run:
         scr.blit(hint, pos)
 
     for name, rect in wkeys: 
-        color = (130, 220, 165) if name in want else white
+        color = (255, 214, 0) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
         pygame.draw.rect(scr, edge, rect, 2, border_radius=4)
         label = font.render(name, True, edge)
@@ -788,7 +791,7 @@ while run:
         )
         scr.blit(label, pos)
     for name, rect in bkeys:
-        color = (130, 220, 165) if name in want else black
+        color = (255, 214, 0) if name in want else black
         pygame.draw.rect(scr, color, rect, border_radius=4)
         txtcol = black if color != black else white
         label = smfont.render(name, True, txtcol)
