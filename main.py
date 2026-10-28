@@ -540,17 +540,17 @@ while run:
         dtab()
         if tab == 'METRONOME':
             txt = tfont.render(str(bpm), True, white)
-            scr.blit(txt, txt.get_rect(center=(wid//2, 215)))
+            scr.blit(txt, txt.get_rect(center=(wid//2, 190)))
             txt = font.render(tname(bpm), True, gray)
-            scr.blit(txt, txt.get_rect(center=(wid//2, 258)))
+            scr.blit(txt, txt.get_rect(center=(wid//2, 235)))
             img = uimg[units[unit]]
             if img is not None:
-                scr.blit(img, img.get_rect(center=(wid // 2, 165)))
+                scr.blit(img, img.get_rect(center=(wid // 2, 135)))
             gap = 72
             start = wid // 2 - (tpb - 1) * gap // 2
             for i in range(tpb):
                 x = start + i * gap
-                y= 320
+                y= 295
                 if m_on and beat== i +1:
                     col =(255, 214, 0)
                 else:
@@ -564,7 +564,7 @@ while run:
             fill = bbar.copy()
             fill.w = round(bbar.w + rate)
             if fill.w > 0:
-                pygame.draw.rect(scr, (118, 40, 214), fill, border_radius=7)
+                pygame.draw.rect(scr, (54, 0, 158), fill, border_radius=7)
             hx= round(bbar.x + bbar.w*rate)
             hand= pygame.Rect(hx -13, bbar.centery - 14, 26, 28)
             pygame.draw.rect(scr, (188, 142, 243), hand, border_radius=10)
