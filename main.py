@@ -139,6 +139,10 @@ m_bt = {
     'GO': pygame.Rect(540, 390, 120, 42),
     'PLUS': pygame.Rect(680, 390, 110, 42)
 }
+m_bt.update({
+    'BAR':pygame.Rect(410, 450, 180, 38)
+    'ACC':pygame.Rect(610, 450, 180, 38)
+})
 
 def dtab():
     for name, rect in tabrs.items():
@@ -267,6 +271,15 @@ while run:
                                 m_at = pygame.time.get_ticks()
                                 if not m_on:
                                     m_ch.stop()
+                            elif name == 'BAR':
+                                vals = (2, 3, 4, 6)
+                                idx= vals.index(tpb)
+                                tpb= vals((idx+1)% len(vals))
+                                beat = 0
+                                if m_on:
+                                    m_at = pygame.time.get_ticks()
+                            elif name == 'ACC':
+                                accent = not accent
                             break
 
         if act in ('REC','STOP','PLAY','CLEAR',):
@@ -392,8 +405,8 @@ while run:
     now = pygame.time.get_ticks()
     if tab == 'METRONOME' and m_on:
         if now >= m_at:
-            beat = beat % 4 + 1
-            if beat == 1:
+            beat = beat % tpb + 1
+            if beat == 1 and accent:
                 m_ch.play(m_acc)
             else:
                 m_ch.play(m_tick)
