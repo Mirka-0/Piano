@@ -353,6 +353,10 @@ while run:
                                 accent = not accent
                             elif name == 'UNIT':
                                 unit = (unit+1) % len(units)
+                                beat = 0
+                                sub = 0
+                                if m_on:
+                                    m_at = pygame.time.get_ticks()
                             elif name == 'SUB':
                                 sidx = (sidx+1) % len(subvals)
                                 sub = 0
