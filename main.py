@@ -340,6 +340,8 @@ while run:
                 target = files[pick]
                 typed = target.stem[:24]
                 held.clear()
+                pedal = False
+                hush()
                 edit = True
                 msg='Enter your new song name!'
                 pygame.key.start_text_input()
@@ -372,6 +374,9 @@ while run:
                         msg= 'Could not save the song :('
 
         if act == 'LOAD':
+            files = sorted(folder.glob('*.json'))
+            if files:
+                pick %= len(files)
             if rec:
                 msg = 'Stooop recordingg!'
             elif not files:
@@ -591,15 +596,15 @@ while run:
     label = font.render(f'VOL {round(vol* 100)}%', True, white)
     scr.blit(label, (bar.x - 115, 105))
 
-    if rec:
+    if msg:
+        txt = msg
+        col = amber
+    elif rec:
         txt = 'Recording'
         col = (255, 100, 110)
     elif playing:
         txt = 'Playing your song!'
         col = (130, 220, 165)
-    elif msg:
-        txt = msg
-        col = amber
     elif files and pygame.time.get_ticks() - sel_at < 3000:
         txt = f'Song is {files[pick].stem}'
         col = (130, 190, 245)
