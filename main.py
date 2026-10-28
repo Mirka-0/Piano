@@ -134,6 +134,8 @@ beat = 0
 m_at = 0
 tpb = 4
 accent = True
+units = ['WHOLE','HALF','QUARTER','8TH', '16TH']
+unit = 2
 m_bt = {
     'MINUS': pygame.Rect(410, 390, 110, 42),
     'GO': pygame.Rect(540, 390, 120, 42),
