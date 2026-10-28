@@ -552,7 +552,7 @@ while run:
                 x = start + i * gap
                 y= 280
                 if m_on and beat== i +1:
-                    col =(255, 214, 0)
+                    col =(246, 197, 3)
                 else:
                     col = (70, 70, 80)
                 pygame.draw.circle(scr, col, (x, y), 27)
@@ -567,7 +567,7 @@ while run:
                 pygame.draw.rect(scr, (54, 0, 158), fill, border_radius=7)
             hx= round(bbar.x + bbar.w*rate)
             hand= pygame.Rect(hx -13, bbar.centery - 14, 26, 28)
-            pygame.draw.rect(scr, (197, 243, 142), hand, border_radius=10)
+            pygame.draw.rect(scr, (134, 0, 197), hand, border_radius=10)
             lo = smfont.render(str(bmin), True, gray)
             hi = smfont.render(str(bmax), True, gray)
             scr.blit(lo, lo.get_rect(midright=(bbar.x - 12, bbar.centery)))
@@ -587,7 +587,7 @@ while run:
                 elif name == 'ACC':
                     txt = 'ACCENT IS ON!' if accent else 'ACCENT OFF!'
                     if accent:
-                        col = (0, 38, 169)
+                        col = (124, 169, 0)
                 elif name == 'UNIT':
                     txt = units[unit].upper()
                 elif name == 'SUB':
@@ -684,7 +684,7 @@ while run:
                 (x-7, y+10),
                 (x+10, y)
             ]
-            col = (130, 220, 165) if playing else gray
+            col = (164, 229, 76) if playing else gray
             pygame.draw.polygon(scr, col, pts)
 
         elif name == 'STOP':
@@ -719,7 +719,7 @@ while run:
         
     if pedal:
         txt= 'PEDAL ON'
-        col=(165, 47, 47)
+        col=(214, 30, 30)
 
     else:
         txt = 'PEDAL OFF'
@@ -744,10 +744,10 @@ while run:
         col = amber
     elif rec:
         txt = 'Recording'
-        col = (255, 100, 110)
+        col = (85, 85, 95)
     elif playing:
         txt = 'Playing your song!'
-        col = (130, 220, 165)
+        col = (165, 47, 47)
     elif files and pygame.time.get_ticks() - sel_at < 3000:
         txt = f'Song is {files[pick].stem}'
         col = (130, 190, 245)
@@ -767,7 +767,7 @@ while run:
             scr, (65, 65, 75), field, border_radius=7
         )
         pygame.draw.rect(
-            scr, (53, 152, 15), field, 2, border_radius=7
+            scr, (165, 47, 47), field, 2, border_radius=7
         )
         txt = font.render(typed + '|', True, white)
         scr.blit(txt, (field.x+12, field.y+10))
@@ -779,7 +779,7 @@ while run:
         scr.blit(hint, pos)
 
     for name, rect in wkeys: 
-        color = (255, 250, 135) if name in want else white
+        color = (130, 220, 165) if name in want else white
         pygame.draw.rect(scr, color, rect, border_radius=4)
         pygame.draw.rect(scr, edge, rect, 2, border_radius=4)
         label = font.render(name, True, edge)
@@ -788,7 +788,7 @@ while run:
         )
         scr.blit(label, pos)
     for name, rect in bkeys:
-        color = (255, 250, 135) if name in want else black
+        color = (130, 220, 165) if name in want else black
         pygame.draw.rect(scr, color, rect, border_radius=4)
         txtcol = black if color != black else white
         label = smfont.render(name, True, txtcol)
