@@ -175,16 +175,16 @@ def getimg(file):
 uimg = {name: getimg(file) for name, file in ufiles.items()}
 rimg = [getimg(file) for file in rfiles]
 m_bt = {
-    'MINUS': pygame.Rect(410, 390, 110, 42),
-    'GO': pygame.Rect(540, 390, 120, 42),
-    'PLUS': pygame.Rect(680, 390, 110, 42)
+    'MINUS': pygame.Rect(410, 375, 110, 42),
+    'GO': pygame.Rect(540, 375, 120, 42),
+    'PLUS': pygame.Rect(680, 375, 110, 42)
 }
 m_bt.update({
-    'BAR':pygame.Rect(410, 450, 180, 38),
-    'ACC':pygame.Rect(610, 450, 180, 38)
+    'BAR':pygame.Rect(410, 440, 180, 42),
+    'ACC':pygame.Rect(610, 440, 180, 42)
 })
-m_bt['UNIT'] = pygame.Rect(805, 450, 170, 38)
-m_bt['SUB'] = pygame.Rect(225, 450, 170, 38)
+m_bt['UNIT'] = pygame.Rect(265, 440, 120, 56)
+m_bt['SUB'] = pygame.Rect(835, 440, 90, 56)
 def dtab():
     for name, rect in tabrs.items():
         if name == tab:
@@ -518,17 +518,18 @@ while run:
         scr.fill(bg)
         dtab()
         if tab == 'METRONOME':
-            txt = bfont.render(f'{units[unit]} =', True, gray)
-            scr.blit(txt, txt.get_rect(center=(wid//2, 215)))
             txt = tfont.render(str(bpm), True, white)
-            scr.blit(txt, txt.get_rect(center=(wid // 2, 255)))
+            scr.blit(txt, txt.get_rect(center=(wid//2, 215)))
             txt = font.render(tname(bpm), True, gray)
-            scr.blit(txt, txt.get_rect(center=(wid//2, 290)))
-            gap = 70
+            scr.blit(txt, txt.get_rect(center=(wid//2, 258)))
+            img = uimg[units[unit]]
+            if img is not None:
+                scr.blit(img, img.get_rect(center=(wid // 2, 165)))
+            gap = 72
             start = wid // 2 - (tpb - 1) * gap // 2
             for i in range(tpb):
-                x = start+i * gap
-                y= 335
+                x = start + i * gap
+                y= 320
                 if m_on and beat== i +1:
                     col =(255, 214, 0)
                 else:
@@ -558,14 +559,21 @@ while run:
                 elif name == 'SUB':
                     txt = 'RHYTHM' if sidx else 'NO RHYTHM D:'
                 pygame.draw.rect(scr, col, rect, border_radius=7)
-                if name in ('UNIT', 'SUB'):
-                    label = bfont.render(txt, True, white)
-                    scr.blit(label, (rect.x + 8, rect.centery - label.get_height() // 2))
-                    img = uimg[units[unit]] if name == 'UNIT' else rimg[sidx]
+                if name in 'SUB':
+                    label = bfont.render('RHYTHM', True, white)
+                    pos=label.get_rect(midleft=(rect.x + 10, rect.centery))
+                    scr.blit(label, pos)
+                    img = rimg[sidx]
                     if img is not None:
-                        tile = pygame.Rect(rect.right-37, rect.centery- 16, 32, 32)
-                        pygame.draw.rect(scr, (242, 235, 240), tile, border_radius=5)
-                        scr.blit(img, img.get_rect(center=tile.center))
+                        scr.blit(img, img.get_rect(center=(rect.right - 24, rect.centery)))
+                elif name == 'UNIT':
+                    img = uimg[units[unit]]
+                    if img is not None:
+                        scr.blit(label, pos)
+                    else:
+                        label = bfont.render('kaomojiii', True, white)
+                        pos = label.get_rect(center=rect.center)
+                        scr.blit(label, pos)
                 else:
                     label = bfont.render(txt, True, white)
                     pos = label.get_rect(center=rect.center)
