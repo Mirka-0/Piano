@@ -134,12 +134,46 @@ beat = 0
 m_at = 0
 tpb = 4
 accent = True
-units = ['WHOLE','HALF','QUARTER','8TH', '16TH']
+units = ['Redonda','Blanca','Negra','Corchea', 'Semicorchea', 'Fusa', 'Semifusa']
 unit = 2
 subvals = (1, 2, 3, 4)
-subtxt = ('OFF', '8THS', 'TRIPLETS', '16THS')
+subtxt = ('OFF', 'Corcheas', 'Tresillos', 'Semicorcheas')
 sidx =0
-sub =0
+sub = 0
+ufiles = {
+    'Redonda': 'redonda.png',
+    'Blanca': 'blanca.png',
+    'Negra': 'negra.png',
+    'Corchea': 'corchea.png',
+    'Semicorchea': 'semicorchea.png',
+    'Fusa': 'fusa.png',
+    'Semifusa': 'semifusa.png'
+}
+rfiles = [
+    None,
+    'corchea_2.png',
+    'tresillo_corchea.png',
+    'semicorchea_2.png'
+]
+def getimg(file):
+    if file is None:
+        return None
+    path = root / 'extras' / file
+    if not path.exists():
+        return None
+    img = pygame.image.load(str(path)).convert_alpha()
+    size=30
+    w, h= img.get_size()
+    scale=min((size-2)/ w, (size-2)/h)
+    w= max(1, round(w*scale))
+    h= max(1,round(h*scale))
+    img = pygame.transform.smoothscale(img, (w, h))
+    canva = pygame.Surface((size, size), pygame.SRCALPHA)
+    pos = img.get_rect(center=(size//2, size // 2))
+    canvas.blit(img, pos)
+    return canvas
+uimg = {name: getimg(file) for name, file in ufiles.items()}
+rimg = [getimg(file) for file in rfiles]
 m_bt = {
     'MINUS': pygame.Rect(410, 390, 110, 42),
     'GO': pygame.Rect(540, 390, 120, 42),
@@ -170,6 +204,9 @@ m_acc = mixer.Sound(str(root / 'audio' / 'accent.wav'))
 m_ch = mixer.Channel(0)
 m_ch.set_volume(0.65)
 
+def icon(name, size= 56):
+    path = root / 'extras' / f'{name}.png'
+    img
 def tname(bpm):
     if bpm < 24:
         return 'Larghissimo'
@@ -289,6 +326,7 @@ while run:
                             break
                 elif tab == 'METRONOME':
                     for name, rect in m_bt.items():
+                        col = (70, 70, 80)
                         if rect.collidepoint(evt.pos):
                             if name == 'MINUS':
                                 bpm = max(40, bpm - 5)
@@ -482,9 +520,6 @@ while run:
     if tab != 'PIANO':
         scr.fill(bg)
         dtab()
-        title= tfont.render(tab, True, white)
-        pos = title.get_rect(center=(wid // 2, 210))
-        scr.blit(title, pos)
         if tab == 'METRONOME':
             txt = bfont.render(f'{units[unit]} =', True, gray)
             scr.blit(txt, txt.get_rect(center=(wid//2, 215)))
@@ -492,8 +527,6 @@ while run:
             scr.blit(txt, txt.get_rect(center=(wid // 2, 255)))
             txt = font.render(tname(bpm), True, gray)
             scr.blit(txt, txt.get_rect(center=(wid//2, 290)))
-            y= 165 if tab == 'METRONOME' else 210
-            pos = title.get_rect(center=(wid // 2, y))
             gap = 70
             start = wid // 2 - (tpb - 1) * gap // 2
             for i in range(tpb):
@@ -507,12 +540,6 @@ while run:
                 num = font.render(str(i+1), True, white)
                 pos = num.get_rect(center=(x,y))
                 scr.blit(num, pos)
-            count = subvals[sidx]
-            for i in range(count):
-                x=wid//2+int((i-(count-1)/2)*28)
-                active = m_on and i == (sub-1) % count
-                col = (218, 50, 34) if active else gray
-            pygame.draw.circle(scr, col, (x, 375), 5)
             for name, rect in m_bt.items():
                 col = (70, 70, 80)
                 if name == 'MINUS':
@@ -526,16 +553,25 @@ while run:
                 elif name == 'BAR':
                     txt = f'{tpb} BEATS/BAR'
                 elif name == 'ACC':
-                    txt = 'ACCENT IS ON' if accent else 'ACCENT OFF'
+                    txt = 'ACCENT IS ON!' if accent else 'ACCENT OFF!'
                     if accent:
                         col = (0, 38, 169)
                 elif name == 'UNIT':
-                    txt = f'BEAT: {units[unit]}'
+                    txt = units[unit].upper()
                 elif name == 'SUB':
-                    txt = f'RHYTHM: {subtxt[sidx]}'
+                    txt = 'RHYTHM' if sidx else 'NO RHYTHM D:'
                 pygame.draw.rect(scr, col, rect, border_radius=7)
-                label = bfont.render(txt, True, white)
-                pos = label.get_rect(center=rect.center)
+                if name in ('UNIT', 'SUB'):
+                    label = bfont.render(txt, True, white)
+                    scr.blit(label, (rect.x + 8, rect.centery - label.get_height() // 2))
+                    img = uimg[units[unit]] if name == 'UNIT' else rimg[sidx]
+                    if img is not None:
+                        tile = pygame.Rect(rect.right-37, rect.centery- 16, 32, 32)
+                        pygame.draw.rect(scr, (242, 235, 240), tile, border_radius=5)
+                        scr.blit(img, img.get_rect(center=tile.center))
+                else:
+                    label = bfont.render(txt, True, white)
+                    pos = label.get_rect(center=rect.center)
                 scr.blit(label, pos)
         else:
             txt= 'The pitch detection will appear on Avengers: Doomsday :D'
