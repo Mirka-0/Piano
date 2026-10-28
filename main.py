@@ -135,6 +135,7 @@ m_at = 0
 tpb = 4
 accent = True
 units = ['Redonda','Blanca','Negra','Corchea', 'Semicorchea', 'Fusa', 'Semifusa']
+uvals = (4, 2, 1, 1/2, 1/4, 1/8, 1/16)
 unit = 2
 subvals = (1, 2, 3, 4)
 subtxt = ('OFF', 'Corcheas', 'Tresillos', 'Semicorcheas')
@@ -150,7 +151,7 @@ ufiles = {
     'Semifusa': 'semifusa.png'
 }
 rfiles = [
-    None,
+    'negra.png',
     'corchea_2.png',
     'tresillo_corchea.png',
     'semicorchea_2.png'
@@ -501,7 +502,7 @@ while run:
                 m_ch.play(m_tick)
                 m_ch.set_volume(0.25)
             sub =(sub+1)% count
-            gap = 60000 / (bpm*count)
+            gap = 60000 * uvals[unit]/ (bpm * count)
             m_at += gap
             if m_at < now:
                 m_at = now + gap

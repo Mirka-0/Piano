@@ -22,9 +22,9 @@ python main.py
 tab: start or stop recording
 enter: replay your recorded song
 delete: eliminate the song
-use prev next to select the song you want to rename (#need to look for the <> emojis)
+use prev next to select the song you want to rename
 esc to cancel renaming
 maybe add a synthetizer 
 or a drum? :0 OMG OR THE THINGY WITH SOHNDS BEATBOx? my brain is not braining im so sorry
-shotout to tech with tim for his videos on how to use json with python and techknowfy and just youtube shotout to youtube dude
+shotout to tech with tim for his videos on how to use json with python and techknowfy and just youtube shotout to youtube
 the emojis i used are from https://www.compart.com/en/unicode and from https://emojidb.org/kaomoji-emojis
