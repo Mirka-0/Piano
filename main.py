@@ -168,7 +168,7 @@ def getimg(file):
     if not path.exists():
         return None
     img = pygame.image.load(str(path)).convert_alpha()
-    size=30
+    size=39
     w, h= img.get_size()
     scale=min((size-2)/ w, (size-2)/h)
     w= max(1, round(w*scale))
