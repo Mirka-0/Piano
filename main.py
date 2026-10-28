@@ -2,9 +2,6 @@ import pygame
 from pygame import mixer
 from pathlib import Path
 import json
-import math
-from array import array
-
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -155,18 +152,8 @@ sel_at = -3000
 msg_at = 0
 oldmsg =''
 
-def mkclk(hz):
-    rate = 44100
-    buf = array('h')
-    for i in range(int(rate*0.05)):
-        t= i / rate
-        fade = math.exp(-90*t)
-        wave = (0.8*math.sin(2*math.pi*hz*t) + 0.2*math.sin(2*math.pi*hz*1.8*t))
-        val = int(13000 * fade * wave)
-        buf.extend((val, val))
-    return mixer.Sound(buffer=buf.tobytes())
-m_tick = mkclk(1000)
-m_acc = mkclk(1600)
+m_tick = mixer.Sound(str(root / 'audio' / 'nrm.wav'))
+m_acc = mixer.Sound(str(root / 'audio' / 'accent.wav'))
 m_ch = mixer.Channel(0)
 m_ch.set_volume(0.65)
 
