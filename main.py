@@ -242,7 +242,23 @@ level = 0.0
 rate =0
 errtxt = ''
 micbt = pygame.Rect(510, 390, 180, 48)    
-
+def mic_cb(data, frames, tm, stat):
+    try:
+        micq.put_nowait(data[:, 0].copy())
+    except Full:
+        pass
+def endmic():
+    global mic, level
+    if mic is not None:
+        mic.stop()
+        mic.close()
+        mic = None
+    level = 0.0
+    while True:
+        try:
+            micq.get_nowait()
+        except Empty:
+            break
 run = True
 while run:
     clk.tick(fps)
