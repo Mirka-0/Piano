@@ -394,6 +394,20 @@ while run:
                                 if m_on:
                                     m_at = pygame.time.get_ticks()
                             break
+                elif tab == 'TUNER':
+                    if micbt.collidepoint(evt.pos):
+                        if mic is None:
+                            try:
+                                info = sd.query_devices(kind='input')
+                                rate = int(info['default_samplerate'])
+                                mic = sd.InputStream(samplerate=rate, channels=1, blocksize=2048, callback=mic_cb)
+                                mic.start()
+                                errtxt= ''
+                            except (sd.PortAudioError, ValueError, OSError) as err:
+                                errtxt = f'Mic error D: {str(err)[:55]}'
+                                endmic()
+                        else:
+                            endmic()
         elif evt.type == pygame.MOUSEBUTTONUP:
             if evt.button == 1:
                 bdrag = False
@@ -601,11 +615,7 @@ while run:
             scr.blit( hi, hi.get_rect(midleft=(bbar.right + 12, bbar.centery)))
             for name, rect in m_bt.items():
                 col = (70, 70, 80)
-                if name == 'MINUS':
-                    txt = '-5 BPM'
-                elif name == 'PLUS':
-                    txt = '+5 BPM'
-                elif name == 'GO':
+                if name == 'GO':
                     txt = 'PAUSE' if m_on else 'START'
                     if m_on:
                         col = (186, 0, 97)
