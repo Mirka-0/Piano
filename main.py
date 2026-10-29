@@ -5,6 +5,7 @@ import json
 import numpy as np
 import sounddevice as sd
 from queue import Queue, Full, Empty
+import math
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -235,7 +236,16 @@ def tname(bpm):
     if bpm < 200:
             return 'Presto'
     return 'Prestissimo'
-
+abc = ['C', 'C#','D', 'D#', 'E', 'F',
+       'F#', 'G', 'G#', 'A', 'A#', 'B']
+sol = ['Do', 'Do#','Re', 'Re#', 'Mi', 'Fa',
+       'Fa#', 'Sol', 'Sol#', 'La', 'La#' 'Si']
+ref = 440
+style = 0
+freq = 0.0
+micon = False
+micmsg = ''
+tbtn = {'DOWN': pygame.Rect(400, 430, 90, 43), 'UP': pygame.Rect(505, 430, 90, 43), 'NAMES': pygame.Rect(615, 430, 200, 43)}
 mic = None
 micq = Queue(maxsize=4)
 level = 0.0
@@ -259,6 +269,19 @@ def endmic():
             micq.get_nowait()
         except Empty:
             break
+def gentnt(hz, ref, style):
+    if hz <= 0:
+        return '-', 0.8
+    midi= round(69+12*math.log2(hz/ref))
+    if midi < 0 or midi >127:
+        return 'OUT', 0.0
+    names = abc if style == 0 else sol
+    note = names[midi%12]
+    octv=midi // 12-1
+    name = f'{note}{octv}'
+    ideal = ref*2**((midi-69)/12)
+    cents = 1200*math.log2(hz/ideal)
+    return name, cents
 run = True
 while run:
     clk.tick(fps)
