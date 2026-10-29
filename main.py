@@ -235,7 +235,13 @@ def tname(bpm):
     if bpm < 200:
             return 'Presto'
     return 'Prestissimo'
-    
+
+mic = None
+micq = Queue(maxsize=4)
+level = 0.0
+rate =0
+errtxt = ''
+micbt = pygame.Rect(510, 390, 180, 48)    
 
 run = True
 while run:
