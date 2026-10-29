@@ -13,6 +13,7 @@ og repository: https://github.com/nbrosowsky/tonejs-instruments
 og piano recordings from VS02 https://github.com/nbrosowsky/tonejs-instruments/blob/master/sample-source-info.txt
 Audio distribution: Makefully-Studios from tonejs-instrument-piano-ogg@1.1.0
 I didn't make any type of modification to the downloaded audio samples
+big thanks to all od the youtube videos that guuded me and to the c#corner
 ## Environment
 install
 source .venv/bin/activate

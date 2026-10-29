@@ -2,6 +2,9 @@ import pygame
 from pygame import mixer
 from pathlib import Path
 import json
+import numpy as np
+import sounddevice as sd
+from queue import Queue, Full, Empty
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -35,7 +38,7 @@ edge = (46,46,46)
 gray = (180, 180, 185)
 amber = (221, 148, 22)
 red = (214, 30, 30)
-green = (130, 220, 165)
+green = (124, 169, 0)
 
 blk_w=40
 blk_h=160
@@ -192,7 +195,7 @@ m_bt = {
 def dtab():
     for name, rect in tabrs.items():
         if name == tab:
-            col = (0, 186, 177)
+            col = (0, 159, 150)
         else:
             col = (70, 70, 80)
         pygame.draw.rect(scr, col, rect, border_radius=7)
@@ -566,10 +569,10 @@ while run:
             fill = bbar.copy()
             fill.w = round(bbar.w * rate)
             if fill.w > 0:
-                pygame.draw.rect(scr, (54, 0, 158), fill, border_radius=7)
+                pygame.draw.rect(scr, (0, 80, 124), fill, border_radius=7)
             hx= round(bbar.x + bbar.w*rate)
             hand= pygame.Rect(hx -13, bbar.centery - 14, 26, 28)
-            pygame.draw.rect(scr, (134, 0, 197), hand, border_radius=10)
+            pygame.draw.rect(scr, (131, 182, 233), hand, border_radius=10)
             lo = smfont.render(str(bmin), True, gray)
             hi = smfont.render(str(bmax), True, gray)
             scr.blit(lo, lo.get_rect(midright=(bbar.x - 12, bbar.centery)))
