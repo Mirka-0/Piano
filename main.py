@@ -442,15 +442,27 @@ while run:
                                 ref = min(466, ref+1)
                             elif name == 'NAMES':
                                 style = 1-style
+                            elif name == 'FLATS':
+                                acc = 1-acc
+                            elif name == 'RESET':
+                                ref = 440
                             break
                     if micbt.collidepoint(evt.pos):
                         if mic is None:
                             try:
                                 info = sd.query_devices(kind='input')
                                 rate = int(info['default_samplerate'])
-                                mic = sd.InputStream(samplerate=rate, channels=1, blocksize=2048, callback=mic_cb)
+                                micbuf = np.zeros(0, dtype=np.float32)
+                                freq=0.0
+                                hzs.clear()
+                                mic = sd.InputStream(
+                                    samplerate=rate,
+                                    channels=1,
+                                    blocksize=2048,
+                                    callback=mic_cb
+                                )
                                 mic.start()
-                                errtxt= ''
+                                errtxt=''
                             except (sd.PortAudioError, ValueError, OSError) as err:
                                 errtxt = f'Mic error D: {str(err)[:55]}'
                                 endmic()
