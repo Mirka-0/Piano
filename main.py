@@ -238,8 +238,12 @@ def tname(bpm):
     return 'Prestissimo'
 abc = ['C', 'C#','D', 'D#', 'E', 'F',
        'F#', 'G', 'G#', 'A', 'A#', 'B']
+flat= ['C', 'Db', 'D', 'Eb', 'E', 'F',
+       'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 sol = ['Do', 'Do#','Re', 'Re#', 'Mi', 'Fa',
        'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si']
+solb = ['Do', 'Reb', 'Re', 'Mib', 'Mi', 'Fa',
+        'Solb', 'Sol', 'Lab', 'La', 'Sib', 'Si']
 ref = 440
 style = 0
 freq = 0.0
