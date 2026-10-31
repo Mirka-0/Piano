@@ -724,6 +724,10 @@ while run:
             scr.blit(txt, (meter.x, 352))
             txt = smfont.render('SHARP', True, gray)
             scr.blit(txt, (meter.right - 35, 352))
+
+            txt = font.render(f'A4 = {ref} Hz', True, white)
+            pos = txt.get_rect(center=(wid//2, 390))
+            scr.blit(txt, pos)
         pygame.display.flip()
         continue
 
