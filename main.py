@@ -728,6 +728,19 @@ while run:
             txt = font.render(f'A4 = {ref} Hz', True, white)
             pos = txt.get_rect(center=(wid//2, 390))
             scr.blit(txt, pos)
+            for name, rect in tbtn.items():
+                pygame.draw.rect(scr, (70, 70, 80), rect, border_radius=7)
+                if name == 'DOWN':
+                    txt = '-1 Hz'
+                elif name == 'UP':
+                    txt = '+1 Hz'
+                elif name == 'MIC':
+                    txt = 'MIC ON' if micon else 'MIC OFF'
+                else:
+                    txt= 'ABC' if style == 0 else 'DO RE MI'
+                label = bfont.render(txt, True, white)
+                pos = label.get_rect(center=rect.center)
+                scr.blit(label, pos)
         pygame.display.flip()
         continue
 
