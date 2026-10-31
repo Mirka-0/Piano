@@ -712,6 +712,14 @@ while run:
             scr.blit(txt, txt.get_rect(center=(wid//2, 250)))
             txt = font.render(info, True, col)
             scr.blit(txt, txt.get_rect(center=(wid//2, 290)))
+            meter = pygame.Rect(360, 330, 480, 12)
+            pygame.draw.rect(scr, (70, 70, 80), meter, border_radius=6)
+            zone = pygame.Rect(meter.centerx - 24, meter.y, 48, 12)
+            pygame.draw.rect(scr, green, zone, border_radius=4)
+            if freq > 0:
+                val =max(-50, min(50, cents))
+                x = meter.centerx + int(val * meter.w/100)
+                pygame.draw.circle(scr, (255, 214, 0), (x, meter.centery), 11)
             
         pygame.display.flip()
         continue
