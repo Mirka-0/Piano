@@ -274,18 +274,22 @@ def endmic():
             micq.get_nowait()
         except Empty:
             break
-def gentnt(hz, ref, style):
+def getnt(hz, ref, style):
     if hz <= 0:
-        return '-', 0.8
+        return '-', 0.0
     midi= round(69+12*math.log2(hz/ref))
-    if midi < 0 or midi >127:
+    if midi < 0 or midi > 127:
         return 'OUT', 0.0
-    names = abc if style == 0 else sol
-    note = names[midi%12]
-    octv=midi // 12-1
+    if style == 0:
+        names = abc if acc == 0 else flat
+    else: 
+        name = sol if acc == 0 else solb
+
+    note = names[midi % 12]
+    octv = midi // 12 - 1
     name = f'{note}{octv}'
-    ideal = ref*2**((midi-69)/12)
-    cents = 1200*math.log2(hz/ideal)
+    ideal = ref * 2 ** ((midi - 69) / 12)
+    cents = 1200 * math.log2(hz / ideal)
     return name, cents
 run = True
 while run:
