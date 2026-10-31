@@ -239,7 +239,7 @@ def tname(bpm):
 abc = ['C', 'C#','D', 'D#', 'E', 'F',
        'F#', 'G', 'G#', 'A', 'A#', 'B']
 sol = ['Do', 'Do#','Re', 'Re#', 'Mi', 'Fa',
-       'Fa#', 'Sol', 'Sol#', 'La', 'La#' 'Si']
+       'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si']
 ref = 440
 style = 0
 freq = 0.0
@@ -247,9 +247,10 @@ micon = False
 micmsg = ''
 tbtn = {'DOWN': pygame.Rect(400, 430, 90, 43), 'UP': pygame.Rect(505, 430, 90, 43), 'NAMES': pygame.Rect(615, 430, 200, 43)}
 mic = None
-micq = Queue(maxsize=4)
+micq = Queue(maxsize=16)
+micbuf = np.zeros(0, dtype=np.float32)
 level = 0.0
-rate =0
+rate =44100
 errtxt = ''
 micbt = pygame.Rect(510, 390, 180, 48)    
 def mic_cb(data, frames, tm, stat):
@@ -419,7 +420,7 @@ while run:
                             break
                 elif tab == 'TUNER':
                     for name, rect in tbtn.items():
-                        if rect.collidepoint(evt, pos):
+                        if rect.collidepoint(evt.pos):
                             if name == 'DOWN':
                                 ref = max(415, ref-1)
                             elif name == 'UP':
