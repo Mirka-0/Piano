@@ -418,6 +418,15 @@ while run:
                                     m_at = pygame.time.get_ticks()
                             break
                 elif tab == 'TUNER':
+                    for name, rect in tbtn.items():
+                        if rect.collidepoint(evt, pos):
+                            if name == 'DOWN':
+                                ref = max(415, ref-1)
+                            elif name == 'UP':
+                                ref = min(466, ref+1)
+                            elif name == 'NAMES':
+                                style = 1-style
+                            break
                     if micbt.collidepoint(evt.pos):
                         if mic is None:
                             try:
@@ -431,6 +440,7 @@ while run:
                                 endmic()
                         else:
                             endmic()
+                        
         elif evt.type == pygame.MOUSEBUTTONUP:
             if evt.button == 1:
                 bdrag = False
@@ -673,11 +683,36 @@ while run:
                     label = bfont.render(txt, True, white)
                     pos = label.get_rect(center=rect.center)
                     scr.blit(label, pos)
-        else:
-            txt= 'The pitch detection will appear on Avengers: Doomsday :D'
-            label = font.render(txt, True, gray)
-            pos = label.get_rect(center=(wid // 2, 280))
-            scr.blit(label, pos)
+        elif tab == 'TUNER':
+            title = tfont.render('TUNER', True, white)
+            pos = label.get_rect(center=(wid // 2, 105))
+            scr.blit(title, pos)
+            if freq > 0:
+                name, cents = gentnt(freq, ref, style)
+                if abs(cents) <= 5:
+                    info = 'IN TUNEE :D'
+                    col = green
+                elif cents < 0:
+                    info = 'TOO FLAT D:'
+                    col = amber
+                else:
+                    info = 'TOO SHARP'
+                    col = red
+                hz = f'{freq:.1f} Hz'
+                info += f' ({cents:+.1f} cents)'
+            else:
+                name = '--'
+                cents = 0
+                hz = 'No pitch detected :('
+                info = micmsg if micmsg else 'Microphone is OFF'
+                col = gray
+            txt = tfont.render(name, True, white)
+            scr.blit(txt, txt.get_rect(center=(wid//2, 200)))
+            txt = font.render(hz, True, gray)
+            scr.blit(txt, txt.get_rect(center=(wid//2, 250)))
+            txt = font.render(info, True, col)
+            scr.blit(txt, txt.get_rect(center=(wid//2, 290)))
+            
         pygame.display.flip()
         continue
 
