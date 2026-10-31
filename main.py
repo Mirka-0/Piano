@@ -249,14 +249,21 @@ style = 0
 freq = 0.0
 micon = False
 micmsg = ''
-tbtn = {'DOWN': pygame.Rect(400, 430, 90, 43), 'UP': pygame.Rect(505, 430, 90, 43), 'NAMES': pygame.Rect(615, 430, 200, 43)}
+tbtn = {
+    'DOWN' : pygame.Rect(280, 430, 100, 42),
+    'UP': pygame.Rect(395, 430, 100, 42),
+    'NAMES': pygame.Rect(510, 430, 160, 42),
+    'FLATS': pygame.Rect(685, 430, 150, 42),
+    'RESET': pygame.Rect(850, 430, 100, 42)
+}
+micbt = pygame.Rect(510, 485, 180, 42)  
 mic = None
 micq = Queue(maxsize=16)
 micbuf = np.zeros(0, dtype=np.float32)
 level = 0.0
 rate =44100
 errtxt = ''
-micbt = pygame.Rect(510, 390, 180, 48)    
+  
 def mic_cb(data, frames, tm, stat):
     try:
         micq.put_nowait(data[:, 0].copy())
