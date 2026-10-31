@@ -720,7 +720,10 @@ while run:
                 val =max(-50, min(50, cents))
                 x = meter.centerx + int(val * meter.w/100)
                 pygame.draw.circle(scr, (255, 214, 0), (x, meter.centery), 11)
-            
+            txt = smfont.render('FLAT', True, gray)
+            scr.blit(txt, (meter.x, 352))
+            txt = smfont.render('SHARP', True, gray)
+            scr.blit(txt, (meter.right - 35, 352))
         pygame.display.flip()
         continue
 
